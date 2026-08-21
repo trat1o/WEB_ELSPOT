@@ -73,6 +73,10 @@ async function writeContent(content) {
   await sql`UPDATE site_content SET content = ${JSON.stringify(content)}::jsonb WHERE id = 1`;
 }
 
+function getClientIp(req) {
+  return (req.headers['x-forwarded-for'] || req.ip || '').toString().split(',')[0].trim();
+}
+
 // ---- Ceļa palīgfunkcijas (atbalsta masīvu indeksus, piem. "whyItems.0.title") ----
 function setPath(obj, pathStr, value) {
   const parts = pathStr.split('.');
@@ -296,7 +300,7 @@ app.post('/quote', asyncRoute(async (req, res) => {
     return res.status(400).json({ ok: false, error: 'Lūdzu, norādi vārdu un kontaktinformāciju.' });
   }
 
-  const ip = (req.headers['x-forwarded-for'] || req.ip || '').toString().split(',')[0].trim();
+  const ip = getClientIp(req);
   if (ip) {
     const recent = await sql`
       SELECT count(*)::int AS n FROM quote_requests
@@ -334,8 +338,23 @@ app.get('/admin/login', (req, res) => {
   res.render('admin/login', { error: null });
 });
 
-app.post('/admin/login', (req, res) => {
+const LOGIN_MAX_ATTEMPTS = 3;
+const LOGIN_LOCKOUT_MINUTES = 60;
+
+app.post('/admin/login', asyncRoute(async (req, res) => {
   const { username, password } = req.body;
+  const ip = getClientIp(req);
+
+  if (ip) {
+    const recentFails = await sql`
+      SELECT count(*)::int AS n FROM login_attempts
+      WHERE ip = ${ip} AND attempted_at > now() - make_interval(mins => ${LOGIN_LOCKOUT_MINUTES})
+    `;
+    if (recentFails[0] && recentFails[0].n >= LOGIN_MAX_ATTEMPTS) {
+      return res.render('admin/login', { error: 'Pārāk daudz nepareizu mēģinājumu. Konts uz brīdi bloķēts — mēģini vēlreiz pēc stundas.' });
+    }
+  }
+
   const adminUser = process.env.ADMIN_USERNAME;
   const adminHash = process.env.ADMIN_PASSWORD_HASH;
 
@@ -346,8 +365,12 @@ app.post('/admin/login', (req, res) => {
     setSessionCookie(res);
     return res.redirect('/admin/edit/home');
   }
+
+  if (ip) {
+    await sql`INSERT INTO login_attempts (ip) VALUES (${ip})`;
+  }
   res.render('admin/login', { error: 'Nepareizs lietotājvārds vai parole.' });
-});
+}));
 
 app.post('/admin/logout', requireAuth, (req, res) => {
   clearSessionCookie(res);

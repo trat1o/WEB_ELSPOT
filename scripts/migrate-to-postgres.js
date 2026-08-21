@@ -31,7 +31,14 @@ async function main() {
     )
   `;
   await sql`ALTER TABLE quote_requests ADD COLUMN IF NOT EXISTS ip text`;
-  console.log('Tabulas site_content un quote_requests gatavas.');
+  await sql`
+    CREATE TABLE IF NOT EXISTS login_attempts (
+      id serial PRIMARY KEY,
+      ip text NOT NULL,
+      attempted_at timestamptz NOT NULL DEFAULT now()
+    )
+  `;
+  console.log('Tabulas site_content, quote_requests un login_attempts gatavas.');
 
   const contentPath = path.join(__dirname, '..', 'data', 'content.json');
   if (fs.existsSync(contentPath)) {
