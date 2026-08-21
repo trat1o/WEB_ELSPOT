@@ -1,0 +1,22 @@
+<%
+  const navBase = editMode ? '/admin/edit/' : '/';
+  const navHome = editMode ? '/admin/edit/home' : '/';
+%>
+<header class="nav <%= activeNav !== 'home' ? 'nav-solid' : '' %>" id="siteNav">
+  <div class="nav-inner">
+    <a href="<%= editMode ? 'javascript:void(0)' : '/' %>" class="logo"<% if (editMode) { %> data-image-field="site.logoInverse"<% } %>><img src="<%= site.logoInverse %>" alt="ELSPOT" class="logo-img"></a>
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="<%= navHome %>" class="<%= activeNav === 'home' ? 'active' : '' %>">Galvenā</a></li>
+        <li><a href="<%= navBase %>produkti" class="<%= activeNav === 'produkti' ? 'active' : '' %>">Produkti</a></li>
+        <li><a href="<%= navBase %>pakalpojumi" class="<%= activeNav === 'pakalpojumi' ? 'active' : '' %>">Pakalpojumi</a></li>
+        <li><a href="<%= navBase %>par-mums" class="<%= activeNav === 'par-mums' ? 'active' : '' %>">Par mums</a></li>
+        <li><a href="<%= navBase %>kontakti" class="<%= activeNav === 'kontakti' ? 'active' : '' %>">Kontakti</a></li>
+        <li><a href="<%= editMode ? 'javascript:void(0)' : '#' %>" class="nav-cta" <%= editMode ? '' : 'data-open-quote' %>>Pieprasi cenu</a></li>
+      </ul>
+    </nav>
+    <button class="nav-burger" aria-label="Izvēlne" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>

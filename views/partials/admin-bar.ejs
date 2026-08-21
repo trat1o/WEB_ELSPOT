@@ -1,0 +1,22 @@
+<div class="adm-topbar">
+  <div class="adm-topbar-left">
+    <span class="adm-topbar-badge">Admin režīms</span>
+    <span class="adm-topbar-page"><%= pageLabel %></span>
+  </div>
+  <div class="adm-topbar-right">
+    <a href="<%= slug === 'home' ? '/' : '/' + slug %>" target="_blank" rel="noopener" class="adm-topbar-link">Skatīt tiešraidē ↗</a>
+    <form method="POST" action="/admin/logout" class="adm-topbar-form">
+      <button type="submit" class="adm-topbar-logout">Izrakstīties</button>
+    </form>
+  </div>
+</div>
+
+<div class="adm-savebar" id="admSavebar" hidden>
+  <span class="adm-savebar-count" id="admSavebarCount"></span>
+  <div class="adm-savebar-actions">
+    <button type="button" class="adm-savebar-discard" id="admDiscardBtn">Atcelt</button>
+    <button type="button" class="adm-savebar-save" id="admSaveBtn">Saglabāt izmaiņas</button>
+  </div>
+</div>
+
+<div class="adm-toast" id="admToast" hidden></div>

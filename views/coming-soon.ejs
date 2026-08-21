@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — ' + page.title, editMode }) %>
+</head>
+<body class="<%= editMode ? 'admin-mode' : '' %>"<% if (editMode) { %> data-page-slug="<%= slug %>"<% } %>>
+
+<% if (editMode) { %><%- include('partials/admin-bar') %><% } %>
+
+<%- include('partials/nav') %>
+
+<section class="coming-soon">
+  <div class="eyebrow">Drīzumā</div>
+  <h1<%- editAttrs(editMode, 'title') %>><%= page.title %></h1>
+  <p<%- editAttrs(editMode, 'body') %>><%= page.body %></p>
+  <div style="margin-top:28px;">
+    <a href="<%= editMode ? 'javascript:void(0)' : '#' %>" class="btn btn-primary" <%= editMode ? '' : 'data-open-quote' %>>Sazinies ar mums</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<% if (!editMode) { %><%- include('partials/quote-modal') %><% } %>
+
+<script src="/js/main.js"></script>
+<% if (editMode) { %><script src="/js/admin-edit.js"></script><% } %>
+</body>
+</html>

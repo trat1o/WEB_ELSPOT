@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — ' + category.title, editMode }) %>
+</head>
+<body class="<%= editMode ? 'admin-mode' : '' %>"<% if (editMode) { %> data-page-slug="produkti"<% } %>>
+
+<% if (editMode) { %><%- include('partials/admin-bar') %><% } %>
+
+<%- include('partials/nav') %>
+
+<section class="category-back-bar page-top-pad">
+  <a class="back-link" href="<%= editMode ? '/admin/edit/produkti/' + section.slug : '/produkti/' + section.slug %>">← Atpakaļ uz <%= section.title %></a>
+</section>
+
+<section class="manufacturers">
+  <div class="section-head">
+    <div class="eyebrow">Ražotāji</div>
+    <h2>Šīs kategorijas ražotāji</h2>
+  </div>
+  <div class="manufacturer-panel">
+    <div class="manufacturer-list">
+      <% const sortedManufacturers = category.manufacturers
+           .map(function(m, j) { return { m: m, j: j }; })
+           .sort(function(a, b) { return a.m.name.localeCompare(b.m.name, 'lv'); }); %>
+      <% sortedManufacturers.forEach(function(entry) { %>
+        <% if (entry.m.url) { %>
+          <a class="manufacturer-list-item" href="<%= entry.m.url %>" target="_blank" rel="noopener"><%= entry.m.name %></a>
+        <% } else { %>
+          <span class="manufacturer-list-item manufacturer-list-item-disabled"><%= entry.m.name %></span>
+        <% } %>
+      <% }) %>
+    </div>
+
+    <div class="manufacturer-grid">
+      <% category.manufacturers.forEach(function(m, j) { %>
+        <div class="manufacturer-item">
+          <div class="manufacturer-box">
+            <% if (editMode) { %>
+              <button type="button" class="manufacturer-remove-btn" data-manufacturer-remove data-section-index="<%= sectionIndex %>" data-category-index="<%= categoryIndex %>" data-manufacturer-index="<%= j %>">✕</button>
+            <% } %>
+            <% if (m.logo && editMode) { %>
+              <div class="manufacturer-logo" style="background-image:url('<%= m.logo %>')" data-image-field="produkti.sections.<%= sectionIndex %>.categories.<%= categoryIndex %>.manufacturers.<%= j %>.logo"></div>
+            <% } else if (m.logo && m.url) { %>
+              <a class="manufacturer-logo" href="<%= m.url %>" target="_blank" rel="noopener" style="background-image:url('<%= m.logo %>')" aria-label="<%= m.name %>"></a>
+            <% } else if (m.logo) { %>
+              <div class="manufacturer-logo" style="background-image:url('<%= m.logo %>')" aria-label="<%= m.name %>"></div>
+            <% } else { %>
+              <div class="manufacturer-logo-placeholder"<% if (editMode) { %> data-image-field="produkti.sections.<%= sectionIndex %>.categories.<%= categoryIndex %>.manufacturers.<%= j %>.logo"<% } %>></div>
+            <% } %>
+          </div>
+          <% if (editMode) { %>
+            <div class="manufacturer-name-field"<%- editAttrs(editMode, 'sections.' + sectionIndex + '.categories.' + categoryIndex + '.manufacturers.' + j + '.name') %>><%= m.name %></div>
+            <div class="manufacturer-url-field"<%- editAttrs(editMode, 'sections.' + sectionIndex + '.categories.' + categoryIndex + '.manufacturers.' + j + '.url') %>><%= m.url %></div>
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+  <% if (editMode) { %>
+    <button type="button" class="manufacturer-add-btn" data-manufacturer-add data-section-index="<%= sectionIndex %>" data-category-index="<%= categoryIndex %>">+ Pievienot ražotāju</button>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+<% if (!editMode) { %><%- include('partials/quote-modal') %><% } %>
+
+<script src="/js/main.js"></script>
+<% if (editMode) { %><script src="/js/admin-edit.js"></script><% } %>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — Produkti', editMode }) %>
+</head>
+<body class="<%= editMode ? 'admin-mode' : '' %>"<% if (editMode) { %> data-page-slug="<%= slug %>"<% } %>>
+
+<% if (editMode) { %><%- include('partials/admin-bar') %><% } %>
+
+<%- include('partials/nav') %>
+
+<section class="product-categories page-top-pad">
+  <div class="section-head">
+    <div class="eyebrow">Produkti</div>
+    <h2<%- editAttrs(editMode, 'heading') %>><%= page.heading %></h2>
+    <p class="product-categories-intro"<%- editAttrs(editMode, 'intro') %>><%= page.intro %></p>
+  </div>
+
+  <div class="product-grid product-grid-wide">
+    <% page.sections.forEach(function(sec, i) { %>
+      <a class="product-card" href="<%= editMode ? '/admin/edit/produkti/' + sec.slug : '/produkti/' + sec.slug %>">
+        <div class="product-card-media">
+          <% if (sec.image) { %>
+            <div class="product-card-image" style="background-image:url('<%= sec.image %>')"></div>
+          <% } else { %>
+            <div class="product-card-placeholder"></div>
+          <% } %>
+          <% if (editMode) { %>
+            <button type="button" class="adm-image-btn product-card-image-btn" data-image-field="produkti.sections.<%= i %>.image">🖼 Mainīt attēlu</button>
+          <% } %>
+        </div>
+        <div class="product-card-title"<%- editAttrs(editMode, 'sections.' + i + '.title') %><% if (editMode) { %> onclick="event.preventDefault()"<% } %>><%= sec.title %></div>
+      </a>
+    <% }) %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<% if (!editMode) { %><%- include('partials/quote-modal') %><% } %>
+
+<script src="/js/main.js"></script>
+<% if (editMode) { %><script src="/js/admin-edit.js"></script><% } %>
+</body>
+</html>

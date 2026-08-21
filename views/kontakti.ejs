@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — Kontakti', editMode }) %>
+</head>
+<body class="<%= editMode ? 'admin-mode' : '' %>"<% if (editMode) { %> data-page-slug="<%= slug %>"<% } %>>
+
+<% if (editMode) { %><%- include('partials/admin-bar') %><% } %>
+
+<%- include('partials/nav') %>
+
+<%
+  const mapLat = parseFloat(page.mapLat) || 56.9496;
+  const mapLng = parseFloat(page.mapLng) || 24.1052;
+  const bboxDelta = 0.01;
+  const mapSrc = 'https://www.openstreetmap.org/export/embed.html?bbox='
+    + (mapLng - bboxDelta) + '%2C' + (mapLat - bboxDelta) + '%2C' + (mapLng + bboxDelta) + '%2C' + (mapLat + bboxDelta)
+    + '&layer=mapnik&marker=' + mapLat + '%2C' + mapLng;
+  const wazeUrl = 'https://waze.com/ul?ll=' + mapLat + ',' + mapLng + '&navigate=yes';
+  const googleUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + mapLat + ',' + mapLng;
+  const appleUrl = 'https://maps.apple.com/?daddr=' + mapLat + ',' + mapLng;
+%>
+
+<section class="contact-section">
+  <div class="contact-grid">
+
+    <div class="contact-card">
+      <div class="eyebrow"<%- editAttrs(editMode, 'eyebrow') %>><%= page.eyebrow %></div>
+      <h2<%- editAttrs(editMode, 'heading') %>><%= page.heading %></h2>
+      <p class="contact-intro"<%- editAttrs(editMode, 'intro') %>><%= page.intro %></p>
+
+      <div class="contact-field-row">
+        <span class="contact-field-label">Tālrunis</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'phone') %>><%= page.phone %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">E-pasts</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'email') %>><%= page.email %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">Adrese</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'address') %>><%= page.address %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">Darba laiks</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'hours') %>><%= page.hours %></span>
+      </div>
+
+      <% if (editMode) { %>
+        <div class="contact-field-row contact-field-row-coords">
+          <span class="contact-field-label">Karte — platums (lat)</span>
+          <span class="contact-field-value"<%- editAttrs(editMode, 'mapLat') %>><%= page.mapLat %></span>
+        </div>
+        <div class="contact-field-row contact-field-row-coords">
+          <span class="contact-field-label">Karte — garums (lng)</span>
+          <span class="contact-field-value"<%- editAttrs(editMode, 'mapLng') %>><%= page.mapLng %></span>
+        </div>
+      <% } %>
+    </div>
+
+    <div class="contact-card contact-map-card">
+      <iframe class="map-frame" src="<%= mapSrc %>" loading="lazy" title="ELSPOT atrašanās vieta"></iframe>
+      <div class="map-cta-wrap">
+        <button type="button" class="map-cta-btn" data-nav-toggle>📍 Brauc pie mums</button>
+        <div class="nav-app-menu" id="navAppMenu">
+          <a href="<%= wazeUrl %>" target="_blank" rel="noopener">Waze</a>
+          <a href="<%= googleUrl %>" target="_blank" rel="noopener">Google Maps</a>
+          <a href="<%= appleUrl %>" target="_blank" rel="noopener">Apple Maps</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <form id="contactForm">
+        <div class="form-field">
+          <label for="contactName">Vārds, uzņēmums *</label>
+          <input type="text" id="contactName" name="contactName" required>
+        </div>
+        <div class="form-field">
+          <label for="contactEmail">E-pasts *</label>
+          <input type="email" id="contactEmail" name="contactEmail" required>
+        </div>
+        <div class="form-field">
+          <label for="contactPhone">Tālrunis</label>
+          <input type="text" id="contactPhone" name="contactPhone">
+        </div>
+        <div class="form-field">
+          <label for="contactMessage">Jūsu jautājums vai objekta apraksts *</label>
+          <textarea id="contactMessage" name="contactMessage" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Nosūtīt pieprasījumu →</button>
+        <div class="form-status" id="contactFormStatus"></div>
+        <p class="form-hint">Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu.</p>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="contact-card contact-requisites-card">
+    <h3 class="contact-requisites-title">Rekvizīti</h3>
+    <div class="contact-requisites-grid">
+      <div class="contact-field-row">
+        <span class="contact-field-label">Uzņēmums</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'requisites.companyName') %>><%= page.requisites.companyName %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">Reģ. nr.</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'requisites.regNr') %>><%= page.requisites.regNr %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">PVN nr.</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'requisites.vatNr') %>><%= page.requisites.vatNr %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">Juridiskā adrese</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'requisites.legalAddress') %>><%= page.requisites.legalAddress %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">Biroja adrese</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'requisites.officeAddress') %>><%= page.requisites.officeAddress %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">Banka</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'requisites.bank') %>><%= page.requisites.bank %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">Konta nr.</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'requisites.accountNr') %>><%= page.requisites.accountNr %></span>
+      </div>
+      <div class="contact-field-row">
+        <span class="contact-field-label">SWIFT</span>
+        <span class="contact-field-value"<%- editAttrs(editMode, 'requisites.swift') %>><%= page.requisites.swift %></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<% if (!editMode) { %><%- include('partials/quote-modal') %><% } %>
+
+<script src="/js/main.js"></script>
+<% if (editMode) { %><script src="/js/admin-edit.js"></script><% } %>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — ' + section.title, editMode }) %>
+</head>
+<body class="<%= editMode ? 'admin-mode' : '' %>"<% if (editMode) { %> data-page-slug="<%= slug %>"<% } %>>
+
+<% if (editMode) { %><%- include('partials/admin-bar') %><% } %>
+
+<%- include('partials/nav') %>
+
+<section class="product-categories page-top-pad">
+  <a class="back-link" href="<%= editMode ? '/admin/edit/produkti' : '/produkti' %>">← Atpakaļ uz Produktiem</a>
+  <div class="section-head">
+    <div class="eyebrow">Produkti</div>
+    <h2<%- editAttrs(editMode, 'sections.' + sectionIndex + '.title') %>><%= section.title %></h2>
+  </div>
+
+  <% if (section.categories.length === 0 && !editMode) { %>
+    <p class="product-categories-intro">Šī sadaļa vēl top. Sazinies ar mums, un ar prieku palīdzēsim jau tagad.</p>
+    <div style="margin-top:20px;">
+      <a href="#" class="btn btn-primary" data-open-quote>Sazinies ar mums</a>
+    </div>
+  <% } else { %>
+    <div class="product-grid">
+      <% section.categories.forEach(function(cat, i) { %>
+        <a class="product-card" href="<%= editMode ? '/admin/edit/produkti/' + section.slug + '/' + cat.slug : '/produkti/' + section.slug + '/' + cat.slug %>">
+          <div class="product-card-media">
+            <% if (cat.image) { %>
+              <div class="product-card-image" style="background-image:url('<%= cat.image %>')"></div>
+            <% } else { %>
+              <div class="product-card-placeholder"></div>
+            <% } %>
+            <% if (editMode) { %>
+              <button type="button" class="adm-image-btn product-card-image-btn" data-image-field="produkti.sections.<%= sectionIndex %>.categories.<%= i %>.image">🖼 Mainīt attēlu</button>
+              <button type="button" class="manufacturer-remove-btn" data-category-remove data-section-index="<%= sectionIndex %>" data-category-index="<%= i %>">✕</button>
+            <% } %>
+          </div>
+          <div class="product-card-title"<%- editAttrs(editMode, 'sections.' + sectionIndex + '.categories.' + i + '.title') %><% if (editMode) { %> onclick="event.preventDefault()"<% } %>><%= cat.title %></div>
+        </a>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (editMode) { %>
+    <button type="button" class="manufacturer-add-btn" data-category-add data-section-index="<%= sectionIndex %>">+ Pievienot kategoriju</button>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+<% if (!editMode) { %><%- include('partials/quote-modal') %><% } %>
+
+<script src="/js/main.js"></script>
+<% if (editMode) { %><script src="/js/admin-edit.js"></script><% } %>
+</body>
+</html>

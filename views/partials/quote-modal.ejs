@@ -1,0 +1,28 @@
+<div class="modal-overlay" id="quoteModal">
+  <div class="modal">
+    <button class="modal-close" data-close-quote aria-label="Aizvērt">&times;</button>
+    <h3>Pieprasi cenu piedāvājumu</h3>
+    <p class="modal-sub">Aizpildi formu, un mēs sazināsimies ar jums 1 darba dienas laikā.</p>
+    <form id="quoteForm">
+      <div class="form-field">
+        <label for="quoteName">Vārds, uzvārds / uzņēmums</label>
+        <input type="text" id="quoteName" name="name" required>
+      </div>
+      <div class="form-field">
+        <label for="quoteContact">E-pasts vai tālrunis</label>
+        <input type="text" id="quoteContact" name="contact" required>
+      </div>
+      <div class="form-field">
+        <label for="quoteMessage">Ziņa (nav obligāti)</label>
+        <textarea id="quoteMessage" name="message"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="quoteAttachment">Pievienot failu (nav obligāti)</label>
+        <input type="file" id="quoteAttachment" name="attachment" accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx,.dwg,.dxf,.zip">
+        <div class="form-hint">Maksimālais faila izmērs — 20MB.</div>
+      </div>
+      <button type="submit" class="btn btn-primary">Nosūtīt pieprasījumu</button>
+      <div class="form-status" id="quoteFormStatus"></div>
+    </form>
+  </div>
+</div>

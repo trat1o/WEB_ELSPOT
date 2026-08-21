@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — Elektromateriālu vairumtirdzniecība', editMode }) %>
+</head>
+<body class="<%= editMode ? 'admin-mode' : '' %>"<% if (editMode) { %> data-page-slug="<%= slug %>"<% } %>>
+
+<% if (editMode) { %><%- include('partials/admin-bar') %><% } %>
+
+<%- include('partials/nav') %>
+
+<section class="hero">
+  <% if (home.heroVideo) { %>
+    <video class="hero-media hero-video" autoplay muted loop playsinline poster="<%= home.heroImage %>">
+      <source src="<%= home.heroVideo %>">
+    </video>
+  <% } else { %>
+    <div class="hero-media" style="background-image:url('<%= home.heroImage %>')"></div>
+  <% } %>
+  <div class="hero-overlay"></div>
+  <% if (editMode) { %>
+    <div class="adm-hero-media-controls">
+      <button type="button" class="adm-image-btn adm-image-btn-hero" data-image-field="home.heroImage">🖼 Mainīt hero attēlu</button>
+      <button type="button" class="adm-image-btn adm-video-btn-hero" data-video-field="home.heroVideo">🎬 <%= home.heroVideo ? 'Mainīt hero video' : 'Pievienot hero video' %></button>
+      <% if (home.heroVideo) { %>
+        <button type="button" class="adm-image-btn adm-video-remove-btn" data-video-remove-field="home.heroVideo">✕ Noņemt video</button>
+      <% } %>
+    </div>
+  <% } %>
+  <div class="hero-content">
+    <h1 class="hero-tagline-text"<%- editAttrs(editMode, 'heroHeading') %>><%= home.heroHeading %></h1>
+  </div>
+</section>
+
+<section class="why">
+  <div class="why-inner">
+    <div class="section-head">
+      <div class="eyebrow"<%- editAttrs(editMode, 'whyEyebrow') %>><%= home.whyEyebrow %></div>
+      <h2<%- editAttrs(editMode, 'whyHeading') %>><%= home.whyHeading %></h2>
+    </div>
+    <div class="why-grid">
+      <% home.whyItems.forEach(function(item, i) { %>
+        <div class="why-item">
+          <h3<%- editAttrs(editMode, 'whyItems.' + i + '.title') %>><%= item.title %></h3>
+          <p<%- editAttrs(editMode, 'whyItems.' + i + '.text') %>><%= item.text %></p>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="cta-strip-inner">
+    <h2<%- editAttrs(editMode, 'ctaHeading') %>><%= home.ctaHeading %></h2>
+    <p<%- editAttrs(editMode, 'ctaText') %>><%= home.ctaText %></p>
+    <a href="<%= editMode ? 'javascript:void(0)' : '#' %>" class="btn btn-primary" <%= editMode ? '' : 'data-open-quote' %><%- editAttrs(editMode, 'ctaButtonText') %>><%= home.ctaButtonText %></a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<% if (!editMode) { %><%- include('partials/quote-modal') %><% } %>
+
+<script src="/js/main.js"></script>
+<% if (editMode) { %><script src="/js/admin-edit.js"></script><% } %>
+</body>
+</html>

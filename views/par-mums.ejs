@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — ' + page.heading, editMode }) %>
+</head>
+<body class="<%= editMode ? 'admin-mode' : '' %>"<% if (editMode) { %> data-page-slug="<%= slug %>"<% } %>>
+
+<% if (editMode) { %><%- include('partials/admin-bar') %><% } %>
+
+<%- include('partials/nav') %>
+
+<section class="intro page-intro">
+  <div>
+    <div class="eyebrow"<%- editAttrs(editMode, 'eyebrow') %>><%= page.eyebrow %></div>
+    <h2<%- editAttrs(editMode, 'heading') %>><%= page.heading %></h2>
+  </div>
+  <div class="intro-text">
+    <p<%- editAttrs(editMode, 'text1') %>><%= page.text1 %></p>
+    <p<%- editAttrs(editMode, 'text2') %>><%= page.text2 %></p>
+    <p<%- editAttrs(editMode, 'text3') %>><%= page.text3 %></p>
+  </div>
+</section>
+
+<section class="team-section">
+  <div class="section-head">
+    <div class="eyebrow"<%- editAttrs(editMode, 'teamEyebrow') %>><%= page.teamEyebrow %></div>
+    <h2<%- editAttrs(editMode, 'teamHeading') %>><%= page.teamHeading %></h2>
+  </div>
+
+  <div class="team-grid">
+    <% page.teamMembers.forEach(function(m, i) { %>
+      <div class="team-card">
+        <div class="team-photo-wrap">
+          <% if (editMode) { %>
+            <button type="button" class="team-remove-btn" data-team-remove data-member-index="<%= i %>">✕</button>
+          <% } %>
+          <% if (m.photo) { %>
+            <div class="team-photo" style="background-image:url('<%= m.photo %>')"<% if (editMode) { %> data-image-field="par-mums.teamMembers.<%= i %>.photo"<% } %>></div>
+          <% } else { %>
+            <div class="team-photo-placeholder"<% if (editMode) { %> data-image-field="par-mums.teamMembers.<%= i %>.photo"<% } %>></div>
+          <% } %>
+        </div>
+        <div class="team-name"<%- editAttrs(editMode, 'teamMembers.' + i + '.name') %>><%= m.name %></div>
+        <div class="team-role"<%- editAttrs(editMode, 'teamMembers.' + i + '.role') %>><%= m.role %></div>
+        <div class="team-contact-row">
+          <span class="team-phone"<%- editAttrs(editMode, 'teamMembers.' + i + '.phone') %>><%= m.phone %></span>
+          <span class="team-email"<%- editAttrs(editMode, 'teamMembers.' + i + '.email') %>><%= m.email %></span>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <% if (editMode) { %>
+    <button type="button" class="manufacturer-add-btn" data-team-add>+ Pievienot darbinieku</button>
+  <% } %>
+</section>
+
+<section class="motto-section">
+  <div class="eyebrow"<%- editAttrs(editMode, 'mottoEyebrow') %>><%= page.mottoEyebrow %></div>
+  <p class="motto-text"<%- editAttrs(editMode, 'motto') %>><%= page.motto %></p>
+</section>
+
+<%- include('partials/footer') %>
+<% if (!editMode) { %><%- include('partials/quote-modal') %><% } %>
+
+<script src="/js/main.js"></script>
+<% if (editMode) { %><script src="/js/admin-edit.js"></script><% } %>
+</body>
+</html>

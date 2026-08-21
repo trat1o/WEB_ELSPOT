@@ -1,0 +1,1410 @@
+{
+  "site": {
+    "logo": "/uploads/logo.svg",
+    "logoInverse": "/uploads/logo-inverse.svg"
+  },
+  "home": {
+    "heroHeading": "Uzticams elektromateriālu partneris kopš 2019. gada",
+    "heroImage": "/uploads/hero.jpg",
+    "heroVideo": null,
+    "whyEyebrow": "Kāpēc ELSPOT",
+    "whyHeading": "Iemesli, kāpēc mums uzticas",
+    "whyItems": [
+      {
+        "title": "Pieredze kopš 2019. gada",
+        "text": "Ilggadēja pieredze elektromateriālu vairumtirdzniecībā un projektu piegādē."
+      },
+      {
+        "title": "Plašs sortiments",
+        "text": "Materiāli un risinājumi no uzticamiem ražotājiem — viss vienuviet."
+      },
+      {
+        "title": "Piegāde visā Latvijā",
+        "text": "Precīzi termiņi neatkarīgi no objekta atrašanās vietas."
+      },
+      {
+        "title": "Personalizēta konsultācija",
+        "text": "Praktiskā pieredzē balstīti ieteikumi katram projektam."
+      }
+    ],
+    "ctaHeading": "Gatavi sākt savu projektu?",
+    "ctaText": "Nosūtiet pieprasījumu, un mēs sagatavosim cenu piedāvājumu 1 darba dienas laikā.",
+    "ctaButtonText": "Pieprasi cenu piedāvājumu"
+  },
+  "produkti": {
+    "heading": "Produktu kategorijas",
+    "intro": "Atrodi starp mūsu pārstāvētajiem ražotājiem sev piemērotu risinājumu un mēs tev to piegādāsim.",
+    "sections": [
+      {
+        "slug": "apgaismojums",
+        "title": "Apgaismojums",
+        "image": null,
+        "categories": [
+          {
+            "slug": "iekstelpu-apgaismojums",
+            "title": "Iekštelpu apgaismojums",
+            "image": "/uploads/img-1787300253729.jpg",
+            "intro": "Risinājumi biroju, ražotņu, tirdzniecības un dzīvojamo telpu apgaismojumam.",
+            "manufacturers": [
+              {
+                "name": "LENA Lighting",
+                "logo": "/uploads/img-1787300291246.png",
+                "url": "https://lenalighting.com/products/47-investment-lighting"
+              },
+              {
+                "name": "ENSTO",
+                "logo": "/uploads/img-1787300787778.png",
+                "url": "https://www.legrand.fi/en/products/lighting"
+              },
+              {
+                "name": "PXF Lighting",
+                "logo": "/uploads/img-1787300956153.png",
+                "url": "https://www.pxf.pl/en/products?ctpe=KategorieTypOprawy&cid%5B%5D=45&cid%5B%5D=49&cid%5B%5D=46&cid%5B%5D=50&cid%5B%5D=51&cid%5B%5D=48&cid%5B%5D=52&cid%5B%5D=55"
+              },
+              {
+                "name": "TAKTON",
+                "logo": "/uploads/img-1787301034824.png",
+                "url": "https://www.takton.ee/products/indoor/"
+              },
+              {
+                "name": "LUXIONA",
+                "logo": "/uploads/img-1787301122878.svg",
+                "url": "https://luxiona.com/products/categories"
+              },
+              {
+                "name": "SYLVANIA",
+                "logo": "/uploads/img-1787301190113.svg",
+                "url": "https://www.sylvania-group.com/professional/"
+              },
+              {
+                "name": "GTV",
+                "logo": "/uploads/img-1787301452165.png",
+                "url": "https://gtv.com.pl/en/product-category/lighting/lighting-for-the-office-and-home/"
+              },
+              {
+                "name": "z2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z5",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z6",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z7",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z8",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z9",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z10",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "z11",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "arejais-apgaismojums",
+            "title": "Ārējais apgaismojums",
+            "image": null,
+            "intro": "Ielu, teritoriju un fasāžu apgaismojuma risinājumi jebkuram objektam.",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "dekorativais-apgaismojums",
+            "title": "Dekoratīvais apgaismojums",
+            "image": null,
+            "intro": "Akcenta un dekoratīvais apgaismojums, kas piešķir telpai raksturu.",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "avarijas-evakuacijas-apgaismojums",
+            "title": "Avārijas / Evakuācijas apgaismojums",
+            "image": null,
+            "intro": "Drošības prasībām atbilstoši avārijas un evakuācijas apgaismojuma risinājumi.",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slug": "rozetes-un-sledzi",
+        "title": "Rozetes un slēdži",
+        "image": null,
+        "categories": [
+          {
+            "slug": "kategorija-1",
+            "title": "Kategorija 1",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-2",
+            "title": "Kategorija 2",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-3",
+            "title": "Kategorija 3",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-4",
+            "title": "Kategorija 4",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slug": "sadalnes-un-automatika",
+        "title": "Sadalnes un automātika",
+        "image": null,
+        "categories": [
+          {
+            "slug": "kategorija-1",
+            "title": "Kategorija 1",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-2",
+            "title": "Kategorija 2",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-3",
+            "title": "Kategorija 3",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-4",
+            "title": "Kategorija 4",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slug": "kabeli-un-vadi",
+        "title": "Kabeļi un vadi",
+        "image": null,
+        "categories": [
+          {
+            "slug": "kategorija-1",
+            "title": "Kategorija 1",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-2",
+            "title": "Kategorija 2",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-3",
+            "title": "Kategorija 3",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-4",
+            "title": "Kategorija 4",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slug": "auto-uzlades",
+        "title": "Auto uzlādes",
+        "image": null,
+        "categories": [
+          {
+            "slug": "kategorija-1",
+            "title": "Kategorija 1",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-2",
+            "title": "Kategorija 2",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-3",
+            "title": "Kategorija 3",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-4",
+            "title": "Kategorija 4",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slug": "elektroinstalacija",
+        "title": "Elektroinstalācija",
+        "image": null,
+        "categories": [
+          {
+            "slug": "kategorija-1",
+            "title": "Kategorija 1",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-2",
+            "title": "Kategorija 2",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-3",
+            "title": "Kategorija 3",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-4",
+            "title": "Kategorija 4",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slug": "elektroinstrumenti-un-piederumi",
+        "title": "Elektroinstrumenti un piederumi",
+        "image": null,
+        "categories": [
+          {
+            "slug": "kategorija-1",
+            "title": "Kategorija 1",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-2",
+            "title": "Kategorija 2",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-3",
+            "title": "Kategorija 3",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-4",
+            "title": "Kategorija 4",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slug": "zibens-novadisana",
+        "title": "Zibens novadīšana",
+        "image": null,
+        "categories": [
+          {
+            "slug": "kategorija-1",
+            "title": "Kategorija 1",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-2",
+            "title": "Kategorija 2",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-3",
+            "title": "Kategorija 3",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-4",
+            "title": "Kategorija 4",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "slug": "zemejums",
+        "title": "Zemējums",
+        "image": null,
+        "categories": [
+          {
+            "slug": "kategorija-1",
+            "title": "Kategorija 1",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-2",
+            "title": "Kategorija 2",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-3",
+            "title": "Kategorija 3",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          },
+          {
+            "slug": "kategorija-4",
+            "title": "Kategorija 4",
+            "image": null,
+            "intro": "",
+            "manufacturers": [
+              {
+                "name": "Ražotājs 1",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 2",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 3",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 4",
+                "logo": null,
+                "url": ""
+              },
+              {
+                "name": "Ražotājs 5",
+                "logo": null,
+                "url": ""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "pakalpojumi": {
+    "title": "Pakalpojumi",
+    "body": "Šī sadaļa vēl top. Sazinies ar mums, un ar prieku palīdzēsim jau tagad."
+  },
+  "par-mums": {
+    "eyebrow": "Par ELSPOT",
+    "heading": "Uzticams partneris elektroinstalāciju un apgaismojuma nozarē",
+    "text1": "ELSPOT SIA ir Latvijas uzņēmums, kas kopš 2019. gada nodarbojas ar elektromateriālu un apgaismojuma risinājumu vairumtirdzniecību. Strādājam ar elektriķiem, projektētājiem un būvniecības uzņēmumiem visā Latvijā, piedāvājot plašu produktu klāstu no uzticamiem Eiropas ražotājiem.",
+    "text2": "Mūsu komandas pieredze aptver gan privātmāju, gan lielu komerciālu un rūpniecisku objektu elektroapgādes risinājumus. Katram klientam piedāvājam individuālu pieeju — no tāmes sagatavošanas un materiālu izvēles līdz precīzai piegādei objektā.",
+    "text3": "Ticam, ka ilgtermiņa sadarbība balstās uz uzticamību, kvalitāti un atklātu komunikāciju. Tāpēc katru pasūtījumu uztveram kā partnerību, nevis vienreizēju darījumu — un ar prieku dalāmies praktiskā pieredzē, kas palīdz mūsu klientiem pieņemt labākos lēmumus.",
+    "teamEyebrow": "Komanda",
+    "teamHeading": "Mūsu komanda",
+    "teamMembers": [
+      {
+        "name": "Vārds Uzvārds",
+        "role": "Amats",
+        "photo": null,
+        "phone": "",
+        "email": ""
+      },
+      {
+        "name": "Vārds Uzvārds",
+        "role": "Amats",
+        "photo": null,
+        "phone": "",
+        "email": ""
+      },
+      {
+        "name": "Vārds Uzvārds",
+        "role": "Amats",
+        "photo": null,
+        "phone": "",
+        "email": ""
+      }
+    ],
+    "mottoEyebrow": "Mūsu moto",
+    "motto": "Uzticams partneris ikvienā projektā — no idejas līdz pēdējam slēdzim."
+  },
+  "kontakti": {
+    "eyebrow": "Kontakti",
+    "heading": "Sazinieties ar mums",
+    "intro": "Atbildam darba dienās 24 stundu laikā. Nosūtiet pieprasījumu vai zvaniet tieši.",
+    "phone": "+371 20 000 000",
+    "email": "info@elspot.lv",
+    "address": "Cesvaines iela 4, Rīga, LV-1073",
+    "hours": "P–Pk 8:00–17:00",
+    "mapLat": "56.9296211",
+    "mapLng": "24.2071313",
+    "requisites": {
+      "companyName": "SIA \"ELSPOT\"",
+      "legalAddress": "Cesvaines iela 4, Rīga, LV-1073",
+      "officeAddress": "Cesvaines iela 4, Rīga, LV-1073",
+      "regNr": "42103101107",
+      "vatNr": "LV42103101107",
+      "bank": "Luminor Bank AS Latvijas filiāle",
+      "accountNr": "LV47RIKO0002930282929",
+      "swift": "RIKOLV2X"
+    }
+  }
+}
