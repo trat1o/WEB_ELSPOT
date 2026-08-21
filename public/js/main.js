@@ -1,8 +1,3 @@
-async function elspotUploadToBlob(file, { handleUploadUrl, pathname }) {
-  const { upload } = await import('https://esm.sh/@vercel/blob@2.8.0/client');
-  return upload(pathname || file.name, file, { access: 'public', handleUploadUrl });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   // Mobilās navigācijas pārslēgs
   const burger = document.querySelector('.nav-burger');
@@ -50,32 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (submitBtn) submitBtn.disabled = true;
 
       try {
-        const fileInput = form.querySelector('#quoteAttachment');
-        const file = fileInput && fileInput.files[0];
-        let attachmentUrl = null;
-        let attachmentOriginalName = null;
-        if (file) {
-          statusEl.textContent = 'Augšupielādē failu...';
-          const blob = await elspotUploadToBlob(file, {
-            handleUploadUrl: '/quote/blob-upload',
-            pathname: 'quote-attachments/' + Date.now() + '-' + file.name,
-          });
-          attachmentUrl = blob.url;
-          attachmentOriginalName = file.name;
-        }
-
-        const res = await fetch('/quote', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: document.getElementById('quoteName').value,
-            contact: document.getElementById('quoteContact').value,
-            message: document.getElementById('quoteMessage').value,
-            website: document.getElementById('quoteWebsite').value,
-            attachmentUrl,
-            attachmentOriginalName,
-          }),
-        });
+        const formData = new FormData(form);
+        const res = await fetch('/quote', { method: 'POST', body: formData });
         const data = await res.json();
         if (res.ok && data.ok) {
           statusEl.textContent = 'Paldies! Sazināsimies ar jums drīzumā.';

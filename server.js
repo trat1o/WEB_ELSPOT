@@ -5,9 +5,12 @@ const crypto = require('crypto');
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
+const multer = require('multer');
 const { neon } = require('@neondatabase/serverless');
 const { handleUpload } = require('@vercel/blob/client');
-const { del: deleteBlob } = require('@vercel/blob');
+const { put: putBlob, del: deleteBlob } = require('@vercel/blob');
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 4 * 1024 * 1024 } });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -244,7 +247,7 @@ async function renderProductCategory(req, res, editMode) {
 app.get('/produkti/:section/:category', asyncRoute((req, res) => renderProductCategory(req, res, false)));
 app.get('/admin/edit/produkti/:section/:category', requireAuth, asyncRoute((req, res) => renderProductCategory(req, res, true)));
 
-// ---- Cenu pieprasījumu pielikumu augšupielāde (publiska, tieši uz Vercel Blob) ----
+// ---- Cenu pieprasījumu pielikumu augšupielāde (servera puse, tad uz Vercel Blob) ----
 const QUOTE_ATTACHMENT_TYPES = [
   'application/pdf',
   'image/jpeg',
@@ -262,34 +265,26 @@ const QUOTE_ATTACHMENT_TYPES = [
 ];
 const QUOTE_ATTACHMENT_EXTENSIONS = ['.pdf', '.jpg', '.jpeg', '.png', '.webp', '.doc', '.docx', '.xls', '.xlsx', '.dwg', '.dxf', '.zip'];
 
-app.post('/quote/blob-upload', asyncRoute(async (req, res) => {
-  try {
-    const jsonResponse = await handleUpload({
-      body: req.body,
-      request: req,
-      onBeforeGenerateToken: async (pathname) => {
-        const ext = path.extname(pathname).toLowerCase();
-        if (!QUOTE_ATTACHMENT_EXTENSIONS.includes(ext)) {
-          throw new Error('Neatbalstīts faila formāts.');
-        }
-        return {
-          allowedContentTypes: QUOTE_ATTACHMENT_TYPES,
-          maximumSizeInBytes: 20 * 1024 * 1024,
-          addRandomSuffix: true,
-        };
-      },
-    });
-    res.json(jsonResponse);
-  } catch (err) {
-    res.status(400).json({ error: err.message || 'Neizdevās sagatavot augšupielādi.' });
-  }
-}));
+const quoteUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 4 * 1024 * 1024 } });
+
+function handleQuoteUpload(req, res, next) {
+  quoteUpload.single('attachment')(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ ok: false, error: 'Fails ir par lielu. Maksimālais izmērs ir 4MB.' });
+      }
+      return res.status(400).json({ ok: false, error: err.message || 'Neizdevās augšupielādēt failu.' });
+    }
+    next();
+  });
+}
 
 const QUOTE_RATE_LIMIT_MAX = 5;
 const QUOTE_RATE_LIMIT_WINDOW_MINUTES = 15;
 
-app.post('/quote', asyncRoute(async (req, res) => {
-  const { name, contact, message, attachmentUrl, attachmentOriginalName, website } = req.body;
+app.post('/quote', handleQuoteUpload, asyncRoute(async (req, res) => {
+  const { name, contact, message, website } = req.body;
+  const file = req.file;
 
   // Slēptais "medus podiņa" lauks — cilvēki to neredz un neaizpilda, boti bieži aizpilda visus laukus.
   if (website) {
@@ -298,6 +293,13 @@ app.post('/quote', asyncRoute(async (req, res) => {
 
   if (!name || !contact) {
     return res.status(400).json({ ok: false, error: 'Lūdzu, norādi vārdu un kontaktinformāciju.' });
+  }
+
+  if (file) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (!QUOTE_ATTACHMENT_EXTENSIONS.includes(ext) || !QUOTE_ATTACHMENT_TYPES.includes(file.mimetype)) {
+      return res.status(400).json({ ok: false, error: 'Neatbalstīts faila formāts.' });
+    }
   }
 
   const ip = getClientIp(req);
@@ -311,12 +313,23 @@ app.post('/quote', asyncRoute(async (req, res) => {
     }
   }
 
+  let attachmentUrl = null;
+  if (file) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const blob = await putBlob(`quote-attachments/${Date.now()}${ext}`, file.buffer, {
+      access: 'public',
+      contentType: file.mimetype,
+      addRandomSuffix: true,
+    });
+    attachmentUrl = blob.url;
+  }
+
   const quote = {
     name: String(name).slice(0, 200),
     contact: String(contact).slice(0, 200),
     message: String(message || '').slice(0, 2000),
-    attachmentUrl: attachmentUrl ? String(attachmentUrl).slice(0, 1000) : null,
-    attachmentOriginalName: attachmentOriginalName ? String(attachmentOriginalName).slice(0, 300) : null,
+    attachmentUrl,
+    attachmentOriginalName: file ? String(file.originalname).slice(0, 300) : null,
   };
 
   await sql`
@@ -423,17 +436,42 @@ app.post('/admin/api/blob-upload', requireAuthApi, asyncRoute(async (req, res) =
   res.json(jsonResponse);
 }));
 
-app.post('/admin/api/image', requireAuthApi, asyncRoute(async (req, res) => {
-  const { field, url } = req.body;
-  if (!field || !url) {
+const IMAGE_CONTENT_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
+const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.svg'];
+
+function handleImageUpload(req, res, next) {
+  upload.single('image')(req, res, (err) => {
+    if (err) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ ok: false, error: 'Attēls ir par lielu. Maksimālais izmērs ir 4MB.' });
+      }
+      return res.status(400).json({ ok: false, error: err.message || 'Neizdevās augšupielādēt attēlu.' });
+    }
+    next();
+  });
+}
+
+app.post('/admin/api/image', requireAuthApi, handleImageUpload, asyncRoute(async (req, res) => {
+  const { field } = req.body;
+  const file = req.file;
+  if (!field || !file) {
     return res.status(400).json({ ok: false, error: 'Trūkst attēla vai lauka nosaukuma.' });
   }
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (!IMAGE_EXTENSIONS.includes(ext) || !IMAGE_CONTENT_TYPES.includes(file.mimetype)) {
+    return res.status(400).json({ ok: false, error: 'Neatbalstīts attēla formāts.' });
+  }
+  const blob = await putBlob(`uploads/img-${Date.now()}${ext}`, file.buffer, {
+    access: 'public',
+    contentType: file.mimetype,
+    addRandomSuffix: true,
+  });
   const content = await readContent();
-  if (!setPath(content, field, url)) {
+  if (!setPath(content, field, blob.url)) {
     return res.status(400).json({ ok: false, error: 'Nezināms lauks: ' + field });
   }
   await writeContent(content);
-  res.json({ ok: true, url });
+  res.json({ ok: true, url: blob.url });
 }));
 
 app.post('/admin/api/video', requireAuthApi, asyncRoute(async (req, res) => {

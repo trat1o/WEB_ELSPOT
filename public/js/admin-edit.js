@@ -118,16 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showToast('Augšupielādē attēlu...');
     try {
-      const blob = await elspotUploadToBlob(file, {
-        handleUploadUrl: '/admin/api/blob-upload',
-        pathname: 'uploads/img-' + Date.now() + '-' + file.name,
-        clientPayload: JSON.stringify({ kind: 'image' }),
-      });
-      const res = await fetch('/admin/api/image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ field: activeImageField, url: blob.url }),
-      });
+      const formData = new FormData();
+      formData.append('field', activeImageField);
+      formData.append('image', file);
+      const res = await fetch('/admin/api/image', { method: 'POST', body: formData });
       const data = await res.json();
       if (res.ok && data.ok) {
         applyImageUrl(activeImageEl, data.url);
