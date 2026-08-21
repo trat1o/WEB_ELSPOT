@@ -26,9 +26,11 @@ async function main() {
       message text,
       attachment_url text,
       attachment_original_name text,
+      ip text,
       submitted_at timestamptz NOT NULL DEFAULT now()
     )
   `;
+  await sql`ALTER TABLE quote_requests ADD COLUMN IF NOT EXISTS ip text`;
   console.log('Tabulas site_content un quote_requests gatavas.');
 
   const contentPath = path.join(__dirname, '..', 'data', 'content.json');

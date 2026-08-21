@@ -4,6 +4,7 @@ const path = require('path');
 const crypto = require('crypto');
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 const { neon } = require('@neondatabase/serverless');
 const { handleUpload } = require('@vercel/blob/client');
 const { del: deleteBlob } = require('@vercel/blob');
@@ -12,7 +13,47 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
+app.set('trust proxy', true);
+
 const sql = neon(process.env.DATABASE_URL);
+
+// ---- E-pasta sūtīšana (cenu pieprasījumi) ----
+const MAIL_TO = process.env.MAIL_TO || 'sales@elspot.lv';
+const MAIL_FROM = process.env.MAIL_FROM || process.env.SMTP_USER;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function getMailTransporter() {
+  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) return null;
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT) || 587,
+    secure: Number(process.env.SMTP_PORT) === 465,
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+  });
+}
+
+async function sendQuoteEmail(quote) {
+  const transporter = getMailTransporter();
+  if (!transporter) {
+    console.warn('SMTP nav konfigurēts (.env trūkst SMTP_HOST/SMTP_USER/SMTP_PASS) — e-pasts par cenu pieprasījumu netika nosūtīts.');
+    return;
+  }
+  const lines = [
+    `Vārds/uzņēmums: ${quote.name}`,
+    `Kontakti: ${quote.contact}`,
+    `Ziņa: ${quote.message || '(nav norādīta)'}`,
+  ];
+  if (quote.attachmentUrl) {
+    lines.push(`Pielikums: ${quote.attachmentUrl}${quote.attachmentOriginalName ? ' (' + quote.attachmentOriginalName + ')' : ''}`);
+  }
+  await transporter.sendMail({
+    from: `"ELSPOT mājaslapa" <${MAIL_FROM}>`,
+    to: MAIL_TO,
+    replyTo: EMAIL_RE.test(quote.contact) ? quote.contact : undefined,
+    subject: `Jauns cenu pieprasījums no ${quote.name}`,
+    text: lines.join('\n'),
+  });
+}
 
 const PAGES = {
   home: { template: 'home', label: 'Galvenā' },
@@ -215,34 +256,76 @@ const QUOTE_ATTACHMENT_TYPES = [
   'image/vnd.dxf',
   'application/octet-stream', // dwg/dxf bieži tiek sūtīti bez precīza MIME tipa
 ];
+const QUOTE_ATTACHMENT_EXTENSIONS = ['.pdf', '.jpg', '.jpeg', '.png', '.webp', '.doc', '.docx', '.xls', '.xlsx', '.dwg', '.dxf', '.zip'];
+
 app.post('/quote/blob-upload', asyncRoute(async (req, res) => {
-  const jsonResponse = await handleUpload({
-    body: req.body,
-    request: req,
-    onBeforeGenerateToken: async () => ({
-      allowedContentTypes: QUOTE_ATTACHMENT_TYPES,
-      maximumSizeInBytes: 20 * 1024 * 1024,
-      addRandomSuffix: true,
-    }),
-  });
-  res.json(jsonResponse);
+  try {
+    const jsonResponse = await handleUpload({
+      body: req.body,
+      request: req,
+      onBeforeGenerateToken: async (pathname) => {
+        const ext = path.extname(pathname).toLowerCase();
+        if (!QUOTE_ATTACHMENT_EXTENSIONS.includes(ext)) {
+          throw new Error('Neatbalstīts faila formāts.');
+        }
+        return {
+          allowedContentTypes: QUOTE_ATTACHMENT_TYPES,
+          maximumSizeInBytes: 20 * 1024 * 1024,
+          addRandomSuffix: true,
+        };
+      },
+    });
+    res.json(jsonResponse);
+  } catch (err) {
+    res.status(400).json({ error: err.message || 'Neizdevās sagatavot augšupielādi.' });
+  }
 }));
 
+const QUOTE_RATE_LIMIT_MAX = 5;
+const QUOTE_RATE_LIMIT_WINDOW_MINUTES = 15;
+
 app.post('/quote', asyncRoute(async (req, res) => {
-  const { name, contact, message, attachmentUrl, attachmentOriginalName } = req.body;
+  const { name, contact, message, attachmentUrl, attachmentOriginalName, website } = req.body;
+
+  // Slēptais "medus podiņa" lauks — cilvēki to neredz un neaizpilda, boti bieži aizpilda visus laukus.
+  if (website) {
+    return res.json({ ok: true });
+  }
+
   if (!name || !contact) {
     return res.status(400).json({ ok: false, error: 'Lūdzu, norādi vārdu un kontaktinformāciju.' });
   }
+
+  const ip = (req.headers['x-forwarded-for'] || req.ip || '').toString().split(',')[0].trim();
+  if (ip) {
+    const recent = await sql`
+      SELECT count(*)::int AS n FROM quote_requests
+      WHERE ip = ${ip} AND submitted_at > now() - make_interval(mins => ${QUOTE_RATE_LIMIT_WINDOW_MINUTES})
+    `;
+    if (recent[0] && recent[0].n >= QUOTE_RATE_LIMIT_MAX) {
+      return res.status(429).json({ ok: false, error: 'Pārāk daudz pieprasījumu. Lūdzu, mēģini vēlreiz vēlāk.' });
+    }
+  }
+
+  const quote = {
+    name: String(name).slice(0, 200),
+    contact: String(contact).slice(0, 200),
+    message: String(message || '').slice(0, 2000),
+    attachmentUrl: attachmentUrl ? String(attachmentUrl).slice(0, 1000) : null,
+    attachmentOriginalName: attachmentOriginalName ? String(attachmentOriginalName).slice(0, 300) : null,
+  };
+
   await sql`
-    INSERT INTO quote_requests (name, contact, message, attachment_url, attachment_original_name)
-    VALUES (
-      ${String(name).slice(0, 200)},
-      ${String(contact).slice(0, 200)},
-      ${String(message || '').slice(0, 2000)},
-      ${attachmentUrl ? String(attachmentUrl).slice(0, 1000) : null},
-      ${attachmentOriginalName ? String(attachmentOriginalName).slice(0, 300) : null}
-    )
+    INSERT INTO quote_requests (name, contact, message, attachment_url, attachment_original_name, ip)
+    VALUES (${quote.name}, ${quote.contact}, ${quote.message}, ${quote.attachmentUrl}, ${quote.attachmentOriginalName}, ${ip || null})
   `;
+
+  try {
+    await sendQuoteEmail(quote);
+  } catch (err) {
+    console.error('Neizdevās nosūtīt e-pastu par cenu pieprasījumu:', err);
+  }
+
   res.json({ ok: true });
 }));
 

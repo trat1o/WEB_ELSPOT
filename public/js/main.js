@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: document.getElementById('quoteName').value,
             contact: document.getElementById('quoteContact').value,
             message: document.getElementById('quoteMessage').value,
+            website: document.getElementById('quoteWebsite').value,
             attachmentUrl,
             attachmentOriginalName,
           }),
@@ -122,12 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = contactForm.contactPhone.value;
       const message = contactForm.contactMessage.value;
       const contact = phone ? `${email} / ${phone}` : email;
+      const website = document.getElementById('contactWebsite').value;
 
       try {
         const res = await fetch('/quote', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, contact, message }),
+          body: JSON.stringify({ name, contact, message, website }),
         });
         const data = await res.json();
         if (res.ok && data.ok) {

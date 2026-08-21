@@ -444,7 +444,8 @@ video.hero-media{
 }
 .manufacturer-list{
   flex:0 0 240px;
-  max-height:1320px;
+  max-height:800px;
+  min-height:0;
   overflow-y:auto;
   overscroll-behavior:contain;
   background:var(--paper-deep);
@@ -728,6 +729,7 @@ div.manufacturer-logo[data-image-field]{ cursor:pointer; }
   background:none; border:none; font-size:20px;
   cursor:pointer; color:var(--espresso-soft); line-height:1;
 }
+.hp-field{ position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; overflow:hidden; }
 .form-field{ margin-bottom:16px; }
 .form-field label{ display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:var(--espresso); }
 .form-field input, .form-field textarea{

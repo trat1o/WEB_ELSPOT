@@ -42,7 +42,9 @@ body.admin-mode .nav{ top:40px; }
 
 /* ---- EDITABLE TEXT ---- */
 [data-field]{
-  outline:1px dashed transparent;
+  outline-width:1px;
+  outline-style:dashed;
+  outline-color:transparent;
   outline-offset:4px;
   cursor:text;
   border-radius:2px;
@@ -52,11 +54,13 @@ body.admin-mode .nav{ top:40px; }
   outline-color:rgba(217,142,60,0.55);
 }
 [data-field]:focus{
-  outline:2px solid var(--amber);
+  outline-width:2px;
+  outline-style:solid;
+  outline-color:#D98E3C;
   background-color:rgba(217,142,60,0.08);
 }
 [data-field].adm-dirty{
-  outline-color:var(--amber);
+  outline-color:#D98E3C;
   background-color:rgba(217,142,60,0.1);
 }
 
