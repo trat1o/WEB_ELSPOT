@@ -1,0 +1,16 @@
+<div class="light-on-overlay" id="lightOverlay">
+  <div class="light-on-beam"></div>
+  <div class="light-on-floor"></div>
+  <img class="light-on-logo-svg" id="introLogo" src="<%= site.logoInverse %>" alt="ELSPOT">
+</div>
+<script>
+(function initLightOn(){
+  var overlay = document.getElementById('lightOverlay');
+  var introLogo = document.getElementById('introLogo');
+  if(!overlay) return;
+  var finish = function(){ overlay.remove(); };
+  if(introLogo){ introLogo.addEventListener('animationend', finish); }
+  else { overlay.addEventListener('animationend', finish); }
+  setTimeout(function(){ if(overlay.parentNode) overlay.remove(); }, 5800);
+})();
+</script>

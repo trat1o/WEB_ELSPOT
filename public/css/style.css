@@ -37,6 +37,34 @@ img{max-width:100%;}
 .nav-inner .logo-img{
   height:105px;
 }
+
+/* ---- IEEJAS ANIMĀCIJA ("gaismas ieslēgšanās") ---- */
+.light-on-overlay{
+  position:fixed;top:0;right:0;bottom:0;left:0;z-index:999;background:#000000;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;opacity:1;pointer-events:none;
+  animation:light-on-bg-fade 4s ease-in-out 0s forwards;
+}
+.light-on-beam{
+  position:absolute;top:-8%;left:50%;width:72vw;max-width:1050px;height:82vh;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse 42% 100% at 50% 0%, rgba(255,225,195,.55) 0%, rgba(255,225,195,.32) 28%, rgba(255,225,195,.14) 52%, rgba(255,225,195,0) 78%);
+  filter:blur(22px);
+}
+.light-on-floor{
+  position:absolute;left:50%;bottom:15%;width:90vw;max-width:1300px;height:340px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at center, rgba(255,225,195,.34) 0%, rgba(255,225,195,.13) 46%, transparent 76%);
+  filter:blur(34px);
+}
+.light-on-logo-svg{position:relative;width:min(1600px, 61vw);height:auto;opacity:1;transform:translateY(10vh);animation:light-on-logo-fade 4s ease-in-out 1s forwards;}
+@media(max-width:760px){
+  .light-on-logo-svg{width:88vw;transform:translateY(-6vh);}
+  .light-on-beam{width:120vw;max-width:none;}
+  .light-on-floor{width:130vw;max-width:none;bottom:26%;}
+}
+@keyframes light-on-bg-fade{0%{opacity:1;}100%{opacity:0;}}
+@keyframes light-on-logo-fade{0%{opacity:1;}100%{opacity:0;}}
+@media (prefers-reduced-motion: reduce){.light-on-overlay{display:none;}}
 .nav-menu{
   display:flex; align-items:center; gap:28px;
   list-style:none;

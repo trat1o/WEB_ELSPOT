@@ -5,6 +5,8 @@
 </head>
 <body class="<%= editMode ? 'admin-mode' : '' %>"<% if (editMode) { %> data-page-slug="<%= slug %>"<% } %>>
 
+<% if (!editMode) { %><%- include('partials/light-on-intro') %><% } %>
+
 <% if (editMode) { %><%- include('partials/admin-bar') %><% } %>
 
 <%- include('partials/nav') %>
