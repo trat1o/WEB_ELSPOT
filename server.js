@@ -401,11 +401,15 @@ app.get('/admin/edit/:slug', requireAuth, asyncRoute(async (req, res) => {
 
 app.post('/admin/api/content', requireAuthApi, asyncRoute(async (req, res) => {
   const { page, fields } = req.body;
-  if (!page || !PAGES[page] || typeof fields !== 'object' || fields === null) {
+  // Produkti apakšlapām (sadaļām/kategorijām) "page" ir salikts ceļš, piem.
+  // "produkti/apgaismojums" vai "produkti/apgaismojums/iekstelpu-apgaismojums" —
+  // saturs tomēr vienmēr glabājas zem vienas "produkti" saknes.
+  const basePage = typeof page === 'string' ? page.split('/')[0] : page;
+  if (!basePage || !PAGES[basePage] || typeof fields !== 'object' || fields === null) {
     return res.status(400).json({ ok: false, error: 'Nepareizi dati.' });
   }
   const content = await readContent();
-  const target = page === 'home' ? content.home : content[page];
+  const target = basePage === 'home' ? content.home : content[basePage];
   const applied = [];
   for (const [fieldPath, rawValue] of Object.entries(fields)) {
     const value = String(rawValue).slice(0, 5000);
