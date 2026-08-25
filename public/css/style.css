@@ -15,7 +15,7 @@ body{
   font-family:'Inter',sans-serif;
   line-height:1.6;
 }
-h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;line-height:1.15;}
+h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500;line-height:1.15;}
 img{max-width:100%;}
 
 /* ---- TOP NAV ---- */
@@ -279,7 +279,7 @@ video.hero-media{
 }
 .team-remove-btn:hover{ background:var(--red-deep); }
 .team-name{
-  font-family:'Fraunces',serif;
+  font-family:'Playfair Display',serif;
   font-size:18px;
   font-weight:500;
   color:var(--espresso);
@@ -309,7 +309,7 @@ video.hero-media{
 .motto-text{
   max-width:760px;
   margin:0 auto;
-  font-family:'Fraunces',serif;
+  font-family:'Playfair Display',serif;
   font-style:italic;
   font-size:clamp(20px,2.6vw,30px);
   line-height:1.4;
@@ -424,13 +424,13 @@ video.hero-media{
 }
 .product-card-placeholder span{
   color:var(--paper);
-  font-family:'Fraunces',serif;
+  font-family:'Playfair Display',serif;
   font-size:20px;
   font-weight:500;
 }
 .product-card-title{
   padding:20px 24px;
-  font-family:'Fraunces',serif;
+  font-family:'Playfair Display',serif;
   font-size:20px;
   font-weight:500;
   color:var(--espresso);
