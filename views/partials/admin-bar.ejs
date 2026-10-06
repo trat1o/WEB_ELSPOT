@@ -4,6 +4,12 @@
     <span class="adm-topbar-page"><%= pageLabel %></span>
   </div>
   <div class="adm-topbar-right">
+    <% var maintOn = (typeof site !== 'undefined' && site && site.maintenance) ? true : false; %>
+    <button type="button" class="adm-maint-toggle<%= maintOn ? ' is-on' : '' %>" id="admMaintBtn" data-enabled="<%= maintOn ? 'true' : 'false' %>" title="Kad ieslēgts, apmeklētāji redz „Under construction” lapu, bet jūs (pieteicies) redzat īsto vietni">
+      <span class="adm-maint-dot"></span>
+      <span class="adm-maint-label" id="admMaintLabel"><%= maintOn ? 'Izstrādes lapa: IESLĒGTA' : 'Izstrādes lapa: izslēgta' %></span>
+    </button>
+    <a href="/under-construction" target="_blank" rel="noopener" class="adm-topbar-link">Priekšskatīt ↗</a>
     <a href="<%= slug === 'home' ? '/' : '/' + slug %>" target="_blank" rel="noopener" class="adm-topbar-link">Skatīt tiešraidē ↗</a>
     <form method="POST" action="/admin/logout" class="adm-topbar-form">
       <button type="submit" class="adm-topbar-logout">Izrakstīties</button>

@@ -29,6 +29,22 @@ body.admin-mode .nav{ top:40px; }
 .adm-topbar-link{ color:rgba(255,255,255,0.85); text-decoration:none; }
 .adm-topbar-link:hover{ color:#fff; text-decoration:underline; }
 .adm-topbar-form{ margin:0; }
+.adm-maint-toggle{
+  display:inline-flex; align-items:center; gap:8px;
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.35);
+  color:#fff;
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-family:inherit;
+  cursor:pointer;
+}
+.adm-maint-toggle:hover{ background:rgba(255,255,255,0.1); }
+.adm-maint-toggle:disabled{ opacity:.6; cursor:default; }
+.adm-maint-dot{ width:8px; height:8px; border-radius:50%; background:#7a8190; }
+.adm-maint-toggle.is-on{ border-color:#D98E3C; }
+.adm-maint-toggle.is-on .adm-maint-dot{ background:#D98E3C; box-shadow:0 0 8px #D98E3C; }
 .adm-topbar-logout{
   background:transparent;
   border:1px solid rgba(255,255,255,0.35);

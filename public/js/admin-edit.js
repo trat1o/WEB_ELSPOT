@@ -34,6 +34,38 @@ document.addEventListener('DOMContentLoaded', () => {
     savebarCount.textContent = count === 1 ? '1 nesaglabāta izmaiņa' : count + ' nesaglabātas izmaiņas';
   }
 
+  // ---- Izstrādes lapas slēdzis ----
+  const maintBtn = document.getElementById('admMaintBtn');
+  if (maintBtn) {
+    maintBtn.addEventListener('click', async () => {
+      const turnOn = maintBtn.dataset.enabled !== 'true';
+      const question = turnOn
+        ? 'Ieslēgt izstrādes lapu?\n\nApmeklētāji redzēs „Under construction” lapu. Jūs (kamēr esat pieteicies) turpināsiet redzēt īsto vietni.'
+        : 'Izslēgt izstrādes lapu?\n\nVietne kļūs publiski redzama visiem apmeklētājiem.';
+      if (!window.confirm(question)) return;
+      maintBtn.disabled = true;
+      try {
+        const res = await fetch('/admin/api/maintenance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ enabled: turnOn }),
+        });
+        const data = await res.json();
+        if (res.ok && data.ok) {
+          maintBtn.dataset.enabled = data.enabled ? 'true' : 'false';
+          maintBtn.classList.toggle('is-on', data.enabled);
+          document.getElementById('admMaintLabel').textContent = data.enabled ? 'Izstrādes lapa: IESLĒGTA' : 'Izstrādes lapa: izslēgta';
+          showToast(data.enabled ? 'Izstrādes lapa ieslēgta — apmeklētāji to redz.' : 'Izstrādes lapa izslēgta — vietne ir publiska.');
+        } else {
+          showToast(data.error || 'Neizdevās nomainīt režīmu.', true);
+        }
+      } catch (err) {
+        showToast('Neizdevās nomainīt režīmu.', true);
+      }
+      maintBtn.disabled = false;
+    });
+  }
+
   // ---- Teksta lauki ----
   document.querySelectorAll('[data-field]').forEach((el) => {
     const original = el.innerText;

@@ -1,0 +1,148 @@
+/* ---- IZSTRĀDES LAPA ("Under construction") ---- */
+:root{
+  --amber:#D98E3C;
+  --amber-soft:#E8B27A;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{
+  position:relative;
+  min-height:100vh;
+  min-height:100svh;
+  background:#000;
+  color:#fff;
+  font-family:'Inter',sans-serif;
+  line-height:1.6;
+  display:flex;
+  flex-direction:column;
+  overflow-x:hidden;
+}
+
+/* Silts "gaismas" mirdzums fonā (tā pati valoda, kas galvenās lapas ieejas efektam) */
+.mt-glow{ position:absolute; pointer-events:none; opacity:0; animation:mt-warm-up 3.2s ease-out .2s forwards, mt-breathe 7s ease-in-out 3.4s infinite; }
+.mt-glow-beam{
+  top:-8%; left:50%; width:72vw; max-width:1050px; height:82vh;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse 42% 100% at 50% 0%, rgba(255,225,195,.50) 0%, rgba(255,225,195,.28) 28%, rgba(255,225,195,.12) 52%, rgba(255,225,195,0) 78%);
+  filter:blur(22px);
+}
+.mt-glow-floor{
+  left:50%; bottom:8%; width:90vw; max-width:1300px; height:340px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse at center, rgba(255,225,195,.26) 0%, rgba(255,225,195,.10) 46%, transparent 76%);
+  filter:blur(34px);
+}
+
+.mt-stage{
+  position:relative;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:48px 24px 24px;
+}
+
+.mt-logo{
+  --logo-w:min(880px, 88vw);
+  width:var(--logo-w);
+  height:auto;
+  /* SVG ap burtiem satur lielu tukšu malu — to kompensējam, lai teksts nenovirzītos pārāk tālu */
+  margin-block:calc(var(--logo-w) * -0.085);
+  filter:drop-shadow(0 0 32px rgba(255,225,195,.20));
+  opacity:0;
+  transform:translateY(10px);
+  animation:mt-rise 1.8s cubic-bezier(.2,.7,.2,1) .35s forwards;
+}
+
+.mt-eyebrow{
+  margin-top:28px;
+  color:var(--amber);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  opacity:0;
+  animation:mt-fade 1.4s ease-out 1.1s forwards;
+}
+.mt-title{
+  margin-top:14px;
+  max-width:18ch;
+  font-family:'Playfair Display',serif;
+  font-weight:500;
+  font-size:clamp(30px, 5.2vw, 56px);
+  line-height:1.12;
+  color:#fff;
+  opacity:0;
+  animation:mt-fade 1.4s ease-out 1.35s forwards;
+}
+.mt-text{
+  margin-top:20px;
+  max-width:560px;
+  font-size:clamp(15px, 1.7vw, 18px);
+  color:rgba(255,255,255,.72);
+  opacity:0;
+  animation:mt-fade 1.4s ease-out 1.6s forwards;
+}
+.mt-divider{
+  width:56px;
+  height:2px;
+  margin:34px auto 26px;
+  background:linear-gradient(90deg, transparent, var(--amber), transparent);
+  opacity:0;
+  animation:mt-fade 1.4s ease-out 1.85s forwards;
+}
+.mt-contact-lead{
+  font-size:14px;
+  color:rgba(255,255,255,.55);
+  opacity:0;
+  animation:mt-fade 1.4s ease-out 2s forwards;
+}
+.mt-contact{
+  margin-top:8px;
+  font-size:17px;
+  font-weight:500;
+  opacity:0;
+  animation:mt-fade 1.4s ease-out 2.15s forwards;
+}
+.mt-contact a{
+  color:#fff;
+  text-decoration:none;
+  border-bottom:1px solid rgba(217,142,60,.55);
+  padding-bottom:2px;
+  transition:color .2s ease, border-color .2s ease;
+}
+.mt-contact a:hover{ color:var(--amber-soft); border-color:var(--amber); }
+.mt-dot{ margin:0 14px; color:var(--amber); }
+
+.mt-footer{
+  position:relative;
+  padding:20px 24px 28px;
+  text-align:center;
+  font-size:12px;
+  letter-spacing:.04em;
+  color:rgba(255,255,255,.38);
+  opacity:0;
+  animation:mt-fade 1.4s ease-out 2.4s forwards;
+}
+
+@keyframes mt-warm-up{ from{opacity:0;} to{opacity:1;} }
+@keyframes mt-breathe{ 0%,100%{opacity:1;} 50%{opacity:.78;} }
+@keyframes mt-rise{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;} }
+@keyframes mt-fade{ from{opacity:0;} to{opacity:1;} }
+
+@media (max-width:600px){
+  .mt-eyebrow{ letter-spacing:.16em; font-size:12px; margin-top:20px; }
+  .mt-dot{ display:block; height:0; overflow:hidden; margin:0; }
+  .mt-contact a{ display:inline-block; margin:4px 0; }
+}
+
+/* Cilvēkiem, kas izslēguši animācijas — viss parādās uzreiz */
+@media (prefers-reduced-motion: reduce){
+  .mt-glow, .mt-logo, .mt-eyebrow, .mt-title, .mt-text, .mt-divider, .mt-contact-lead, .mt-contact, .mt-footer{
+    animation:none !important; opacity:1 !important; transform:none !important;
+  }
+  .mt-glow-beam{ transform:translateX(-50%) !important; }
+  .mt-glow-floor{ transform:translateX(-50%) !important; }
+}

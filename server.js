@@ -196,6 +196,35 @@ function asyncRoute(fn) {
   return (req, res, next) => fn(req, res, next).catch(next);
 }
 
+// ---- Izstrādes režīms ("Under construction") ----
+// Kad content.site.maintenance ir true, apmeklētāji redz izstrādes lapu (503),
+// bet pieteikušies administratori turpina redzēt īsto vietni. /admin un statiskie faili vienmēr strādā.
+function renderMaintenance(res, content, status) {
+  res.set('X-Robots-Tag', 'noindex, nofollow');
+  res.set('Cache-Control', 'no-store');
+  if (status === 503) res.set('Retry-After', '86400');
+  res.status(status).render('maintenance', { site: content.site, contact: content.kontakti || {} });
+}
+
+async function maintenanceGate(req, res, next) {
+  try {
+    if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+    if (req.path.startsWith('/admin') || req.path === '/under-construction') return next();
+    const content = await readContent();
+    if (!(content.site && content.site.maintenance)) return next();
+    if (isAuthed(req)) return next();
+    renderMaintenance(res, content, 503);
+  } catch (err) {
+    next(err);
+  }
+}
+app.use(maintenanceGate);
+
+// Izstrādes lapas priekšskatījums (vienmēr pieejams, neatkarīgi no slēdža)
+app.get('/under-construction', asyncRoute(async (req, res) => {
+  renderMaintenance(res, await readContent(), 200);
+}));
+
 // ---- Publiskie maršruti ----
 Object.keys(PAGES).forEach((slug) => {
   const route = slug === 'home' ? '/' : `/${slug}`;
@@ -397,6 +426,14 @@ app.get('/admin/edit/:slug', requireAuth, asyncRoute(async (req, res) => {
   const { slug } = req.params;
   if (!PAGES[slug]) return res.status(404).send('Lapa nav atrasta.');
   await renderPage(slug, req, res, true);
+}));
+
+app.post('/admin/api/maintenance', requireAuthApi, asyncRoute(async (req, res) => {
+  const enabled = req.body.enabled === true || req.body.enabled === 'true';
+  const content = await readContent();
+  content.site.maintenance = enabled;
+  await writeContent(content);
+  res.json({ ok: true, enabled });
 }));
 
 app.post('/admin/api/content', requireAuthApi, asyncRoute(async (req, res) => {
