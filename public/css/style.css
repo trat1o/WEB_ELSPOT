@@ -236,7 +236,14 @@ video.hero-media{
 .intro .eyebrow{color:var(--amber-deep); font-size:26px;}
 .intro h2{font-size:clamp(24px,3vw,34px); color:var(--espresso);}
 .intro-text p{font-size:16px; color:var(--espresso-soft); margin-bottom:16px;}
-.page-intro{ padding-top:240px; padding-bottom:160px; }
+/* Par mums: teksts centrēts vertikāli starp izvēlni un kājeni */
+.page-intro{
+  flex:1 0 auto;
+  align-content:center;
+  align-items:center;
+  padding-top:195px;      /* fiksētās izvēlnes augstums (145px) + atstarpe */
+  padding-bottom:50px;
+}
 
 .section-head{ margin-bottom:36px; max-width:640px; }
 .section-head .eyebrow{ color:var(--amber-deep); }
@@ -1000,3 +1007,4 @@ div.manufacturer-logo[data-image-field]{ cursor:pointer; }
 
 .admin-hint{ font-size:13px; color:var(--espresso-soft); margin:0 0 16px; line-height:1.5; }
 .admin-hint a{ color:var(--red); }
+@media (max-width:900px){ .page-intro{ padding-top:150px; padding-bottom:56px; } }
