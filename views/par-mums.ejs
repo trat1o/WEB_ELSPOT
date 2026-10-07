@@ -22,10 +22,13 @@
   </div>
 </section>
 
+<%# Devīzes sadaļa tiek rādīta tikai, ja tā nav tukša (admin režīmā — vienmēr, lai varētu aizpildīt) %>
+<% if (editMode || String(page.motto || '').trim() || String(page.mottoEyebrow || '').trim()) { %>
 <section class="motto-section">
   <div class="eyebrow"<%- editAttrs(editMode, 'mottoEyebrow') %>><%= page.mottoEyebrow %></div>
   <p class="motto-text"<%- editAttrs(editMode, 'motto') %>><%= page.motto %></p>
 </section>
+<% } %>
 
 <%- include('partials/footer') %>
 <% if (!editMode) { %><%- include('partials/quote-modal') %><% } %>

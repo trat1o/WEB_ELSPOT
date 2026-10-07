@@ -14,7 +14,14 @@ body{
   color:var(--espresso);
   font-family:'Inter',sans-serif;
   line-height:1.6;
+  /* Kājene vienmēr ekrāna apakšā, arī īsās lapās (piem., Par mums) */
+  min-height:100vh;
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
 }
+body > section{ width:100%; }
+.site-footer{ margin-top:auto; }
 h1,h2,h3{font-family:'Playfair Display',serif;font-weight:500;line-height:1.15;}
 img{max-width:100%;}
 
