@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — Sīkdatņu politika', editMode }) %>
+</head>
+<body>
+
+<%- include('partials/nav') %>
+
+<%
+  const req = (kontakti && kontakti.requisites) || {};
+  const company = req.companyName || 'SIA "ELSPOT"';
+%>
+
+<section class="legal">
+  <div class="legal-inner">
+    <div class="eyebrow">Juridiskā informācija</div>
+    <h1 class="legal-title">Sīkdatņu politika</h1>
+    <p class="legal-updated">Pēdējoreiz atjaunota: 2026. gada 7. oktobrī</p>
+
+    <p>Sīkdatnes ir nelieli teksta faili, ko vietne saglabā jūsu ierīcē. <%= company %> mājaslapa elspot.lv izmanto tikai minimāli nepieciešamo sīkdatņu skaitu un <strong>neizmanto analītikas, reklāmas vai sekošanas sīkdatnes</strong>. Fonti tiek nodrošināti no mūsu pašu servera, tāpēc to ielādes laikā jūsu dati netiek sūtīti trešajām pusēm.</p>
+
+    <h2>1. Sīkdatnes, ko izmantojam</h2>
+    <table class="legal-table">
+      <thead>
+        <tr><th>Nosaukums</th><th>Mērķis</th><th>Derīguma termiņš</th><th>Veids</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>elspot_consent</code></td>
+          <td>Saglabā jūsu izvēli par sīkdatnēm un ārējā satura ielādi</td>
+          <td>180 dienas</td>
+          <td>Tehniski nepieciešama</td>
+        </tr>
+        <tr>
+          <td><code>elspot_admin</code></td>
+          <td>Administratora pieslēgšanās sesija (netiek iestatīta parastiem apmeklētājiem)</td>
+          <td>8 stundas</td>
+          <td>Tehniski nepieciešama</td>
+        </tr>
+        <tr>
+          <td><code>elspot_2fa</code></td>
+          <td>Administratora pieslēgšanās otrā soļa apstiprināšana (netiek iestatīta parastiem apmeklētājiem)</td>
+          <td>10 minūtes</td>
+          <td>Tehniski nepieciešama</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Tehniski nepieciešamajām sīkdatnēm jūsu piekrišana nav vajadzīga (Elektronisko sakaru likuma 100. pants).</p>
+
+    <h2>2. Ārējais saturs (tikai ar jūsu piekrišanu)</h2>
+    <p>Kontaktu lapā ir interaktīva <strong>OpenStreetMap</strong> karte. Tā tiek ielādēta tikai pēc tam, kad esat to atļāvis (sīkdatņu paziņojumā vai spiežot pogu „Ielādēt karti”). Ielādējot karti, jūsu pārlūks izveido savienojumu ar OpenStreetMap Foundation serveriem, kuriem tiek nosūtīta jūsu IP adrese un pārlūka dati; OpenStreetMap var iestatīt savas sīkdatnes. Sīkāka informācija: <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">OpenStreetMap privātuma politika</a>.</p>
+    <p>Ja karti neielādējat, savienojums ar OpenStreetMap netiek veidots. Saites uz Waze, Google Maps un Apple Maps ir parastas hipersaites — savienojums ar attiecīgo pakalpojumu tiek izveidots tikai tad, ja uz tām noklikšķināt.</p>
+
+    <h2>3. Kā mainīt vai atsaukt izvēli</h2>
+    <p>Izvēli varat mainīt jebkurā brīdī, nospiežot zemāk redzamo pogu vai saiti „Sīkdatņu iestatījumi” lapas kājenē. Sīkdatnes varat dzēst arī sava pārlūka iestatījumos.</p>
+    <p><button type="button" class="btn btn-primary" data-open-cookie-settings>Sīkdatņu iestatījumi</button></p>
+
+    <h2>4. Kontakti</h2>
+    <p>Jautājumu gadījumā rakstiet uz <a href="mailto:<%= kontakti.email %>"><%= kontakti.email %></a>. Informāciju par personas datu apstrādi skatiet <a href="/privatuma-politika">privātuma politikā</a>.</p>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<%- include('partials/quote-modal') %>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

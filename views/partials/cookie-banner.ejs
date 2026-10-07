@@ -1,0 +1,49 @@
+<%# Sīkdatņu piekrišanas paziņojums (ES: ePrivacy direktīva + VDAR). Noraidīšana ir tikpat viegla kā pieņemšana. %>
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-labelledby="cookieTitle" hidden>
+  <div class="cookie-banner-inner">
+    <div class="cookie-text">
+      <strong id="cookieTitle">Jūsu privātums ir svarīgs</strong>
+      <p>
+        Šī vietne izmanto tikai tehniski nepieciešamās sīkdatnes. Ārēju saturu (piem., OpenStreetMap karti) ielādējam tikai ar jūsu piekrišanu.
+        Analītikas un reklāmas sīkdatnes mēs neizmantojam.
+        Plašāk: <a href="/sikdatnu-politika">sīkdatņu politika</a> un <a href="/privatuma-politika">privātuma politika</a>.
+      </p>
+    </div>
+    <div class="cookie-actions">
+      <button type="button" class="cookie-btn cookie-btn-reject" data-cookie="reject">Tikai nepieciešamās</button>
+      <button type="button" class="cookie-btn cookie-btn-settings" data-cookie="settings">Iestatījumi</button>
+      <button type="button" class="cookie-btn cookie-btn-accept" data-cookie="accept">Pieņemt visas</button>
+    </div>
+  </div>
+</div>
+
+<div class="cookie-modal" id="cookieModal" role="dialog" aria-modal="true" aria-labelledby="cookieModalTitle" hidden>
+  <div class="cookie-modal-box">
+    <button type="button" class="cookie-modal-close" data-cookie="close" aria-label="Aizvērt">&times;</button>
+    <h3 id="cookieModalTitle">Sīkdatņu iestatījumi</h3>
+    <div class="cookie-option">
+      <div class="cookie-option-head">
+        <strong>Tehniski nepieciešamās</strong>
+        <span class="cookie-always">Vienmēr ieslēgtas</span>
+      </div>
+      <p>Saglabā jūsu sīkdatņu izvēli un nodrošina administratoru pieslēgšanos. Bez tām vietne nevar droši darboties; piekrišana nav nepieciešama.</p>
+    </div>
+    <div class="cookie-option">
+      <div class="cookie-option-head">
+        <strong>Ārējais saturs — kartes</strong>
+        <label class="cookie-switch">
+          <input type="checkbox" id="cookieMaps">
+          <span class="cookie-switch-track" aria-hidden="true"></span>
+          <span class="visually-hidden">Atļaut OpenStreetMap karti</span>
+        </label>
+      </div>
+      <p>Kontaktu lapā rāda interaktīvu OpenStreetMap karti. Ielādējot to, jūsu IP adrese tiek nosūtīta OpenStreetMap Foundation.</p>
+    </div>
+    <div class="cookie-modal-actions">
+      <button type="button" class="cookie-btn cookie-btn-reject" data-cookie="reject">Tikai nepieciešamās</button>
+      <button type="button" class="cookie-btn cookie-btn-accept" data-cookie="save">Saglabāt izvēli</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/consent.js" defer></script>

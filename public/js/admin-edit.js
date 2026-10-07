@@ -370,3 +370,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// Admin režīmā kategoriju/sadaļu kartiņu virsrakstus rediģē, nevis atver saites (aizstāj inline onclick — CSP).
+document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-no-nav]')) e.preventDefault();
+}, true);

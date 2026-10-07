@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('../partials/head', { pageTitle: 'Admin — PIN apstiprināšana — ELSPOT' }) %>
+</head>
+<body class="admin-login-page">
+
+<div class="admin-wrap" style="margin:0;">
+  <div class="admin-card">
+    <h1>Apstiprini pieslēgšanos</h1>
+    <p class="admin-hint">Uz <strong><%= maskedEmail %></strong> nosūtījām 6 ciparu PIN kodu. Tas ir derīgs 10 minūtes.</p>
+    <% if (error) { %>
+      <div class="admin-error"><%= error %></div>
+    <% } %>
+    <form method="POST" action="/admin/verify" autocomplete="off">
+      <div class="form-field">
+        <label for="pin">PIN kods</label>
+        <input type="text" id="pin" name="pin" inputmode="numeric" pattern="[0-9 ]{6,7}" maxlength="7" autocomplete="one-time-code" required autofocus>
+      </div>
+      <button type="submit" class="admin-submit">Apstiprināt</button>
+    </form>
+    <p class="admin-hint"><a href="/admin/login">← Sākt no jauna</a></p>
+  </div>
+</div>
+
+</body>
+</html>

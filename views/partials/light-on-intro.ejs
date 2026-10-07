@@ -3,7 +3,7 @@
   <div class="light-on-floor"></div>
   <img class="light-on-logo-svg" id="introLogo" src="<%= site.logoInverse %>" alt="ELSPOT">
 </div>
-<script>
+<script nonce="<%= typeof cspNonce !== 'undefined' ? cspNonce : '' %>">
 (function initLightOn(){
   var overlay = document.getElementById('lightOverlay');
   var introLogo = document.getElementById('introLogo');

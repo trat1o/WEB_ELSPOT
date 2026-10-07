@@ -22,11 +22,15 @@
       </div>
       <div class="form-field">
         <label for="quoteAttachment">Pievienot failu (nav obligāti)</label>
-        <input type="file" id="quoteAttachment" name="attachment" accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx,.dwg,.dxf,.zip">
-        <div class="form-hint">Maksimālais faila izmērs — 4MB.</div>
+        <input type="file" id="quoteAttachment" name="attachment" accept=".pdf,.jpg,.jpeg,.png,.webp,.docx,.xlsx,.dwg,.dxf">
+        <div class="form-hint">PDF, JPG, PNG, WEBP, DOCX, XLSX, DWG, DXF. Maksimālais izmērs — 4MB.</div>
       </div>
+      <label class="consent-check">
+        <input type="checkbox" id="quoteConsent" name="consent" required>
+        <span>Esmu iepazinies/-usies ar <a href="/privatuma-politika" target="_blank" rel="noopener">privātuma politiku</a> un piekrītu, ka mani dati tiek izmantoti, lai atbildētu uz šo pieprasījumu. *</span>
+      </label>
       <button type="submit" class="btn btn-primary">Nosūtīt pieprasījumu</button>
-      <div class="form-status" id="quoteFormStatus"></div>
+      <div class="form-status" id="quoteFormStatus" role="status"></div>
     </form>
   </div>
 </div>

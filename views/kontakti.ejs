@@ -80,7 +80,18 @@
     </div>
 
     <div class="contact-card contact-map-card">
-      <iframe class="map-frame" src="<%= mapSrc %>" loading="lazy" title="ELSPOT atrašanās vieta"></iframe>
+      <% if (editMode) { %>
+      <iframe class="map-frame" src="<%= mapSrc %>" title="ELSPOT atrašanās vieta"></iframe>
+      <% } else { %>
+      <iframe class="map-frame" data-map-src="<%= mapSrc %>" title="ELSPOT atrašanās vieta" hidden></iframe>
+      <div class="map-consent" data-map-consent>
+        <div class="map-consent-box">
+          <strong>Karte netiek rādīta, kamēr nepiekrītat</strong>
+          <p>Karti nodrošina OpenStreetMap (ārējs pakalpojums). Ielādējot to, jūsu IP adrese tiek nosūtīta OpenStreetMap Foundation serveriem. Sīkāk — <a href="/sikdatnu-politika">sīkdatņu politikā</a>.</p>
+          <button type="button" class="btn btn-primary" data-map-load>Ielādēt karti</button>
+        </div>
+      </div>
+      <% } %>
       <div class="map-cta-wrap">
         <button type="button" class="map-cta-btn" data-nav-toggle>📍 Brauc pie mums</button>
         <div class="nav-app-menu" id="navAppMenu">
@@ -113,9 +124,12 @@
           <label for="contactMessage">Jūsu jautājums vai objekta apraksts *</label>
           <textarea id="contactMessage" name="contactMessage" required></textarea>
         </div>
+        <label class="consent-check">
+          <input type="checkbox" id="contactConsent" name="consent" required>
+          <span>Esmu iepazinies/-usies ar <a href="/privatuma-politika" target="_blank" rel="noopener">privātuma politiku</a> un piekrītu, ka mani dati tiek izmantoti, lai atbildētu uz šo pieprasījumu. *</span>
+        </label>
         <button type="submit" class="btn btn-primary">Nosūtīt pieprasījumu →</button>
-        <div class="form-status" id="contactFormStatus"></div>
-        <p class="form-hint">Nosūtot pieprasījumu, jūs piekrītat, ka sazināsimies ar jums par šo jautājumu.</p>
+        <div class="form-status" id="contactFormStatus" role="status"></div>
       </form>
     </div>
 

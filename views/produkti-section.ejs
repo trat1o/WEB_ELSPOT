@@ -37,7 +37,7 @@
               <button type="button" class="manufacturer-remove-btn" data-category-remove data-section-index="<%= sectionIndex %>" data-category-index="<%= i %>">✕</button>
             <% } %>
           </div>
-          <div class="product-card-title"<%- editAttrs(editMode, 'sections.' + sectionIndex + '.categories.' + i + '.title') %><% if (editMode) { %> onclick="event.preventDefault()"<% } %>><%= cat.title %></div>
+          <div class="product-card-title"<%- editAttrs(editMode, 'sections.' + sectionIndex + '.categories.' + i + '.title') %><% if (editMode) { %> data-no-nav<% } %>><%= cat.title %></div>
         </a>
       <% }) %>
     </div>

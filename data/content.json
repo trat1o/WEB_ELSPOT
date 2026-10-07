@@ -7,8 +7,6 @@
     "heroHeading": "Uzticams elektromateriālu partneris kopš 2019. gada",
     "heroImage": "/uploads/hero.jpg",
     "heroVideo": null,
-    "whyEyebrow": "Kāpēc ELSPOT",
-    "whyHeading": "Iemesli, kāpēc mums uzticas",
     "whyItems": [
       {
         "title": "Pieredze kopš 2019. gada",
@@ -28,7 +26,6 @@
       }
     ],
     "ctaHeading": "Gatavi sākt savu projektu?",
-    "ctaText": "Nosūtiet pieprasījumu, un mēs sagatavosim cenu piedāvājumu 1 darba dienas laikā.",
     "ctaButtonText": "Pieprasi cenu piedāvājumu"
   },
   "produkti": {

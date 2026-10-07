@@ -7,16 +7,19 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const multer = require('multer');
 const { neon } = require('@neondatabase/serverless');
-const { handleUpload } = require('@vercel/blob/client');
 const { put: putBlob, del: deleteBlob } = require('@vercel/blob');
+const security = require('./lib/security');
+const uploads = require('./lib/uploads');
 
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 4 * 1024 * 1024 } });
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 4 * 1024 * 1024, files: 1, fields: 10, fieldSize: 10 * 1024 } });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const IS_PROD = process.env.NODE_ENV === 'production';
 
 app.set('trust proxy', true);
+app.disable('x-powered-by');
+app.use(security.securityHeaders);
 
 const sql = neon(process.env.DATABASE_URL);
 
@@ -45,6 +48,9 @@ async function sendQuoteEmail(quote) {
     `Vārds/uzņēmums: ${quote.name}`,
     `Kontakti: ${quote.contact}`,
     `Ziņa: ${quote.message || '(nav norādīta)'}`,
+    '',
+    '---',
+    `IP: ${quote.ip || 'nezināma'}  |  Piekrišana privātuma politikai: jā`,
   ];
   if (quote.attachmentUrl) {
     lines.push(`Pielikums: ${quote.attachmentUrl}${quote.attachmentOriginalName ? ' (' + quote.attachmentOriginalName + ')' : ''}`);
@@ -52,8 +58,8 @@ async function sendQuoteEmail(quote) {
   await transporter.sendMail({
     from: `"ELSPOT mājaslapa" <${MAIL_FROM}>`,
     to: MAIL_TO,
-    replyTo: EMAIL_RE.test(quote.contact) ? quote.contact : undefined,
-    subject: `Jauns cenu pieprasījums no ${quote.name}`,
+    replyTo: EMAIL_RE.test(String(quote.contact).trim()) ? String(quote.contact).trim() : undefined,
+    subject: `Jauns cenu pieprasījums no ${String(quote.name).replace(/[\r\n]+/g, ' ')}`.slice(0, 200),
     text: lines.join('\n'),
   });
 }
@@ -155,13 +161,13 @@ function setSessionCookie(res) {
     'HttpOnly',
     'Path=/',
     `Max-Age=${Math.floor(SESSION_MAX_AGE_MS / 1000)}`,
-    'SameSite=Lax',
+    'SameSite=Strict',
   ];
   if (IS_PROD) parts.push('Secure');
-  res.setHeader('Set-Cookie', parts.join('; '));
+  res.append('Set-Cookie', parts.join('; '));
 }
 function clearSessionCookie(res) {
-  res.setHeader('Set-Cookie', `${COOKIE_NAME}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax${IS_PROD ? '; Secure' : ''}`);
+  res.append('Set-Cookie', `${COOKIE_NAME}=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict${IS_PROD ? '; Secure' : ''}`);
 }
 
 function requireAuth(req, res, next) {
@@ -231,6 +237,21 @@ Object.keys(PAGES).forEach((slug) => {
   app.get(route, asyncRoute((req, res) => renderPage(slug, req, res, false)));
 });
 
+// ---- Juridiskās lapas (privātuma un sīkdatņu politika) ----
+[['privatuma-politika', 'Privātuma politika'], ['sikdatnu-politika', 'Sīkdatņu politika']].forEach(([route, label]) => {
+  app.get('/' + route, asyncRoute(async (req, res) => {
+    const content = await readContent();
+    res.render(route, {
+      site: content.site,
+      kontakti: content.kontakti,
+      editMode: false,
+      activeNav: 'legal',
+      slug: route,
+      pageLabel: label,
+    });
+  }));
+});
+
 // ---- Produkti sections (virsnodaļas) ----
 async function renderProductSection(req, res, editMode) {
   const content = await readContent();
@@ -276,94 +297,121 @@ async function renderProductCategory(req, res, editMode) {
 app.get('/produkti/:section/:category', asyncRoute((req, res) => renderProductCategory(req, res, false)));
 app.get('/admin/edit/produkti/:section/:category', requireAuth, asyncRoute((req, res) => renderProductCategory(req, res, true)));
 
-// ---- Cenu pieprasījumu pielikumu augšupielāde (servera puse, tad uz Vercel Blob) ----
-const QUOTE_ATTACHMENT_TYPES = [
-  'application/pdf',
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  'application/vnd.ms-excel',
-  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-  'application/zip',
-  'application/x-zip-compressed',
-  'image/vnd.dwg',
-  'image/vnd.dxf',
-  'application/octet-stream', // dwg/dxf bieži tiek sūtīti bez precīza MIME tipa
-];
-const QUOTE_ATTACHMENT_EXTENSIONS = ['.pdf', '.jpg', '.jpeg', '.png', '.webp', '.doc', '.docx', '.xls', '.xlsx', '.dwg', '.dxf', '.zip'];
+// ---- Robotu pārbaude veidlapām (talons + darba pierādījums) ----
+app.get('/api/challenge', asyncRoute(async (req, res) => {
+  await security.ensureSchema(sql, deleteBlob);
+  const ip = getClientIp(req) || 'unknown';
+  if (await security.rateLimited(sql, 'challenge', ip, 40, 10)) {
+    return res.status(429).json({ ok: false, error: 'Pārāk daudz pieprasījumu.' });
+  }
+  res.set('Cache-Control', 'no-store');
+  res.json({ ok: true, ...security.issueChallenge() });
+}));
 
-const quoteUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 4 * 1024 * 1024 } });
+// ---- Cenu pieprasījumi un kontaktforma (publiski, ar vairāku līmeņu aizsardzību pret robotiem) ----
+const quoteUpload = upload.single('attachment');
 
 function handleQuoteUpload(req, res, next) {
-  quoteUpload.single('attachment')(req, res, (err) => {
+  quoteUpload(req, res, (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({ ok: false, error: 'Fails ir par lielu. Maksimālais izmērs ir 4MB.' });
       }
-      return res.status(400).json({ ok: false, error: err.message || 'Neizdevās augšupielādēt failu.' });
+      return res.status(400).json({ ok: false, error: 'Neizdevās augšupielādēt failu.' });
     }
     next();
   });
 }
 
-const QUOTE_RATE_LIMIT_MAX = 5;
-const QUOTE_RATE_LIMIT_WINDOW_MINUTES = 15;
+const QUOTE_LIMITS = [
+  // [veids, atslēga, max, logs minūtēs]
+  ['quote', 'ip', 8, 15],
+  ['quote-day', 'ip', 20, 1440],
+  ['quote-all', 'global', 100, 60],
+];
+const PHONE_DIGITS_RE = /\d/g;
+const EMAIL_IN_TEXT_RE = /[^\s@/,;]+@[^\s@/,;]+\.[^\s@/,;]{2,}/;
+const stripControl = (v) => String(v == null ? '' : v).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, '').trim();
 
-app.post('/quote', handleQuoteUpload, asyncRoute(async (req, res) => {
-  const { name, contact, message, website } = req.body;
+app.post('/quote', security.sameOriginOnly, handleQuoteUpload, asyncRoute(async (req, res) => {
+  const body = req.body || {};
   const file = req.file;
+  const ip = getClientIp(req) || 'unknown';
 
-  // Slēptais "medus podiņa" lauks — cilvēki to neredz un neaizpilda, boti bieži aizpilda visus laukus.
-  if (website) {
-    return res.json({ ok: true });
-  }
+  // 1) Slēptais "medus podiņa" lauks — cilvēki to neredz, boti bieži aizpilda visus laukus. Botam rādām "veiksmi".
+  if (body.website) return res.json({ ok: true });
 
-  if (!name || !contact) {
-    return res.status(400).json({ ok: false, error: 'Lūdzu, norādi vārdu un kontaktinformāciju.' });
-  }
+  await security.ensureSchema(sql, deleteBlob);
 
-  if (file) {
-    const ext = path.extname(file.originalname).toLowerCase();
-    if (!QUOTE_ATTACHMENT_EXTENSIONS.includes(ext) || !QUOTE_ATTACHMENT_TYPES.includes(file.mimetype)) {
-      return res.status(400).json({ ok: false, error: 'Neatbalstīts faila formāts.' });
-    }
-  }
-
-  const ip = getClientIp(req);
-  if (ip) {
-    const recent = await sql`
-      SELECT count(*)::int AS n FROM quote_requests
-      WHERE ip = ${ip} AND submitted_at > now() - make_interval(mins => ${QUOTE_RATE_LIMIT_WINDOW_MINUTES})
-    `;
-    if (recent[0] && recent[0].n >= QUOTE_RATE_LIMIT_MAX) {
+  // 2) Ātruma ierobežojumi (katrs mēģinājums tiek uzskaitīts, arī nederīgie)
+  for (const [kind, scope, max, minutes] of QUOTE_LIMITS) {
+    if (await security.rateLimited(sql, kind, scope === 'ip' ? ip : 'global', max, minutes)) {
       return res.status(429).json({ ok: false, error: 'Pārāk daudz pieprasījumu. Lūdzu, mēģini vēlreiz vēlāk.' });
     }
   }
 
-  let attachmentUrl = null;
+  // 3) Cilvēka pārbaude: parakstīts talons, vecums, darba pierādījums, vienreizlietojums
+  const challengeError = await security.verifyChallenge(sql, body.ch_token, body.ch_solution);
+  if (challengeError) {
+    const msg = challengeError === 'too-fast' || challengeError === 'work' || challengeError === 'missing'
+      ? 'Drošības pārbaude vēl nav pabeigta. Uzgaidi sekundi un mēģini vēlreiz.'
+      : 'Drošības pārbaude beigusies. Lūdzu, atsvaidzini lapu un mēģini vēlreiz.';
+    return res.status(400).json({ ok: false, error: msg });
+  }
+
+  // 4) Lauku pārbaude un attīrīšana
+  const name = stripControl(body.name).replace(/\s+/g, ' ');
+  const contact = stripControl(body.contact).replace(/\s+/g, ' ');
+  const message = stripControl(body.message);
+  const consent = body.consent === true || body.consent === 'true' || body.consent === 'on' || body.consent === '1';
+
+  if (!name || !contact) {
+    return res.status(400).json({ ok: false, error: 'Lūdzu, norādi vārdu un kontaktinformāciju.' });
+  }
+  if (!consent) {
+    return res.status(400).json({ ok: false, error: 'Lūdzu, apstiprini, ka esi iepazinies ar privātuma politiku.' });
+  }
+  if (name.length < 2 || name.length > 200 || contact.length > 200 || message.length > 2000) {
+    return res.status(400).json({ ok: false, error: 'Lūdzu, pārbaudi ievadīto datu garumu.' });
+  }
+  const digits = (contact.match(PHONE_DIGITS_RE) || []).length;
+  if (!EMAIL_IN_TEXT_RE.test(contact) && digits < 7) {
+    return res.status(400).json({ ok: false, error: 'Lūdzu, norādi derīgu e-pastu vai tālruņa numuru.' });
+  }
+  const linkCount = (name + ' ' + message).match(/(https?:\/\/|www\.)/gi);
+  if (linkCount && linkCount.length > 2) {
+    return res.status(400).json({ ok: false, error: 'Ziņā drīkst būt ne vairāk kā 2 saites.' });
+  }
+
+  // 5) Pielikums: pārbaude pēc satura, nejaušs nosaukums, attēlu pārkodēšana
+  let attachment = null;
   if (file) {
-    const ext = path.extname(file.originalname).toLowerCase();
-    const blob = await putBlob(`quote-attachments/${Date.now()}${ext}`, file.buffer, {
+    attachment = await uploads.processAttachment(file);
+    if (attachment.error) return res.status(400).json({ ok: false, error: attachment.error });
+  }
+
+  let attachmentUrl = null;
+  if (attachment) {
+    const blob = await putBlob(attachment.pathname, attachment.buffer, {
       access: 'public',
-      contentType: file.mimetype,
+      contentType: attachment.contentType,
       addRandomSuffix: true,
     });
     attachmentUrl = blob.url;
   }
 
   const quote = {
-    name: String(name).slice(0, 200),
-    contact: String(contact).slice(0, 200),
-    message: String(message || '').slice(0, 2000),
+    name,
+    contact,
+    message,
     attachmentUrl,
-    attachmentOriginalName: file ? String(file.originalname).slice(0, 300) : null,
+    attachmentOriginalName: file ? uploads.safeDisplayName(file.originalname) : null,
+    ip,
   };
 
   await sql`
     INSERT INTO quote_requests (name, contact, message, attachment_url, attachment_original_name, ip)
-    VALUES (${quote.name}, ${quote.contact}, ${quote.message}, ${quote.attachmentUrl}, ${quote.attachmentOriginalName}, ${ip || null})
+    VALUES (${quote.name}, ${quote.contact}, ${quote.message}, ${quote.attachmentUrl}, ${quote.attachmentOriginalName}, ${ip})
   `;
 
   try {
@@ -376,25 +424,72 @@ app.post('/quote', handleQuoteUpload, asyncRoute(async (req, res) => {
 }));
 
 // ---- Admin maršruti ----
+// Visiem POST pieprasījumiem uz /admin jānāk no mūsu pašu lapas; admin lapas netiek kešotas.
+app.use('/admin', (req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  res.set('X-Robots-Tag', 'noindex, nofollow');
+  if (req.method === 'POST') return security.sameOriginOnly(req, res, next);
+  next();
+});
+
 app.get('/admin/login', (req, res) => {
   res.render('admin/login', { error: null });
 });
 
 const LOGIN_MAX_ATTEMPTS = 3;
 const LOGIN_LOCKOUT_MINUTES = 60;
+const LOCKOUT_MESSAGE = 'Pārāk daudz nepareizu mēģinājumu. Piekļuve uz brīdi bloķēta — mēģini vēlreiz pēc stundas.';
+
+async function isLockedOut(ip) {
+  if (!ip) return false;
+  const rows = await sql`
+    SELECT count(*)::int AS n FROM login_attempts
+    WHERE ip = ${ip} AND attempted_at > now() - make_interval(mins => ${LOGIN_LOCKOUT_MINUTES})
+  `;
+  return !!(rows[0] && rows[0].n >= LOGIN_MAX_ATTEMPTS);
+}
+async function recordFailure(ip) {
+  if (ip) await sql`INSERT INTO login_attempts (ip) VALUES (${ip})`;
+}
+
+// ---- Papildu aizsardzība: vienreizējs PIN kods uz administratora e-pastu (ieslēdzas, ja iestatīts ADMIN_2FA_EMAIL) ----
+const PENDING_COOKIE = 'elspot_2fa';
+const PENDING_MAX_AGE_MS = 10 * 60 * 1000;
+const getTwoFactorEmail = () => (process.env.ADMIN_2FA_EMAIL || '').trim();
+
+function maskEmail(email) {
+  const [user, domain] = email.split('@');
+  return `${user.slice(0, 1)}${'*'.repeat(Math.max(1, Math.min(user.length - 1, 6)))}@${domain}`;
+}
+function pinSignature(payload, pin) {
+  return signPayload(`2fa:${payload}:${pin}`);
+}
+function createPendingValue(pin) {
+  const payload = Buffer.from(JSON.stringify({ exp: Date.now() + PENDING_MAX_AGE_MS, n: crypto.randomBytes(8).toString('hex') })).toString('base64url');
+  return `${payload}.${pinSignature(payload, pin)}`;
+}
+function readPending(req) {
+  const value = parseCookies(req)[PENDING_COOKIE];
+  if (!value) return null;
+  const dot = value.lastIndexOf('.');
+  if (dot === -1) return null;
+  const payload = value.slice(0, dot);
+  try {
+    const data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf-8'));
+    if (typeof data.exp !== 'number' || data.exp < Date.now()) return null;
+  } catch { return null; }
+  return { payload, sig: value.slice(dot + 1) };
+}
+function pendingCookieHeader(value, maxAgeSeconds) {
+  return `${PENDING_COOKIE}=${value}; HttpOnly; Path=/admin; Max-Age=${maxAgeSeconds}; SameSite=Strict${IS_PROD ? '; Secure' : ''}`;
+}
 
 app.post('/admin/login', asyncRoute(async (req, res) => {
   const { username, password } = req.body;
   const ip = getClientIp(req);
 
-  if (ip) {
-    const recentFails = await sql`
-      SELECT count(*)::int AS n FROM login_attempts
-      WHERE ip = ${ip} AND attempted_at > now() - make_interval(mins => ${LOGIN_LOCKOUT_MINUTES})
-    `;
-    if (recentFails[0] && recentFails[0].n >= LOGIN_MAX_ATTEMPTS) {
-      return res.render('admin/login', { error: 'Pārāk daudz nepareizu mēģinājumu. Konts uz brīdi bloķēts — mēģini vēlreiz pēc stundas.' });
-    }
+  if (await isLockedOut(ip)) {
+    return res.render('admin/login', { error: LOCKOUT_MESSAGE });
   }
 
   const adminUser = process.env.ADMIN_USERNAME;
@@ -403,15 +498,79 @@ app.post('/admin/login', asyncRoute(async (req, res) => {
   if (!adminUser || !adminHash) {
     return res.render('admin/login', { error: 'Admin konts nav konfigurēts (trūkst ADMIN_USERNAME/ADMIN_PASSWORD_HASH).' });
   }
-  if (username === adminUser && bcrypt.compareSync(password || '', adminHash)) {
+  // Paroli pārbaudām vienmēr (arī ja lietotājvārds nepareizs), lai atbildes laiks neatklātu lietotājvārdu.
+  const u = Buffer.from(String(username || '')), a = Buffer.from(adminUser);
+  const userOk = u.length === a.length && crypto.timingSafeEqual(u, a);
+  const passOk = bcrypt.compareSync(String(password || '').slice(0, 200), adminHash);
+
+  if (!(userOk && passOk)) {
+    await recordFailure(ip);
+    return res.render('admin/login', { error: 'Nepareizs lietotājvārds vai parole.' });
+  }
+
+  const twoFactorEmail = getTwoFactorEmail();
+  if (!twoFactorEmail) {
     setSessionCookie(res);
     return res.redirect('/admin/edit/home');
   }
 
-  if (ip) {
-    await sql`INSERT INTO login_attempts (ip) VALUES (${ip})`;
+  // Otrais solis: nosūtām 6 ciparu PIN uz administratora e-pastu.
+  await security.ensureSchema(sql, deleteBlob);
+  if (await security.rateLimited(sql, '2fa-mail', ip || 'unknown', 5, 60)) {
+    return res.render('admin/login', { error: 'Pārāk daudz PIN kodu pieprasījumu. Mēģini vēlreiz vēlāk.' });
   }
-  res.render('admin/login', { error: 'Nepareizs lietotājvārds vai parole.' });
+  const transporter = getMailTransporter();
+  if (!transporter) {
+    return res.render('admin/login', { error: 'E-pasta sūtīšana nav konfigurēta, tāpēc PIN kodu nevar nosūtīt.' });
+  }
+  const pin = String(crypto.randomInt(0, 1000000)).padStart(6, '0');
+  try {
+    await transporter.sendMail({
+      from: `"ELSPOT mājaslapa" <${MAIL_FROM}>`,
+      to: twoFactorEmail,
+      subject: 'ELSPOT admin pieslēgšanās kods',
+      text: [
+        `Jūsu vienreizējais pieslēgšanās kods: ${pin}`,
+        '',
+        'Kods ir derīgs 10 minūtes.',
+        `Pieslēgšanās mēģinājums no IP: ${ip || 'nezināma'}`,
+        '',
+        'Ja to nedarījāt jūs, nevienam nenosūtiet šo kodu un nomainiet admin paroli.',
+      ].join('\n'),
+    });
+  } catch (err) {
+    console.error('Neizdevās nosūtīt admin PIN:', err);
+    return res.render('admin/login', { error: 'Neizdevās nosūtīt PIN kodu uz e-pastu. Mēģini vēlreiz.' });
+  }
+  res.append('Set-Cookie', pendingCookieHeader(createPendingValue(pin), Math.floor(PENDING_MAX_AGE_MS / 1000)));
+  res.redirect('/admin/verify');
+}));
+
+app.get('/admin/verify', (req, res) => {
+  const email = getTwoFactorEmail();
+  if (!email || !readPending(req)) return res.redirect('/admin/login');
+  res.render('admin/verify', { error: null, maskedEmail: maskEmail(email) });
+});
+
+app.post('/admin/verify', asyncRoute(async (req, res) => {
+  const email = getTwoFactorEmail();
+  const pending = readPending(req);
+  const ip = getClientIp(req);
+  if (!email || !pending) return res.redirect('/admin/login');
+  if (await isLockedOut(ip)) {
+    return res.render('admin/verify', { error: LOCKOUT_MESSAGE, maskedEmail: maskEmail(email) });
+  }
+  const pin = String((req.body && req.body.pin) || '').replace(/\s+/g, '');
+  const expected = Buffer.from(pinSignature(pending.payload, pin));
+  const given = Buffer.from(pending.sig);
+  const ok = /^\d{6}$/.test(pin) && expected.length === given.length && crypto.timingSafeEqual(expected, given);
+  if (!ok) {
+    await recordFailure(ip);
+    return res.render('admin/verify', { error: 'Nepareizs PIN kods.', maskedEmail: maskEmail(email) });
+  }
+  res.append('Set-Cookie', pendingCookieHeader('', 0));
+  setSessionCookie(res);
+  res.redirect('/admin/edit/home');
 }));
 
 app.post('/admin/logout', requireAuth, (req, res) => {
@@ -467,29 +626,10 @@ app.post('/admin/api/content', requireAuthApi, asyncRoute(async (req, res) => {
   res.json({ ok: true, applied });
 }));
 
-// ---- Admin attēlu/video augšupielāde (tieši uz Vercel Blob no pārlūka) ----
-app.post('/admin/api/blob-upload', requireAuthApi, asyncRoute(async (req, res) => {
-  const jsonResponse = await handleUpload({
-    body: req.body,
-    request: req,
-    onBeforeGenerateToken: async (pathname, clientPayload) => {
-      let kind = 'image';
-      try { kind = JSON.parse(clientPayload || '{}').kind || 'image'; } catch { /* nekas jādara */ }
-      const isVideo = kind === 'video';
-      return {
-        allowedContentTypes: isVideo
-          ? ['video/mp4', 'video/webm', 'video/quicktime']
-          : ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'],
-        maximumSizeInBytes: isVideo ? 60 * 1024 * 1024 : 8 * 1024 * 1024,
-        addRandomSuffix: true,
-      };
-    },
-  });
-  res.json(jsonResponse);
-}));
-
-const IMAGE_CONTENT_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'];
-const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.svg'];
+// ---- Admin attēlu augšupielāde (servera puse: pārbaude pēc satura, pārkodēšana, nejaušs nosaukums) ----
+// Lauks, kuram piešķir attēla adresi, drīkst būt tikai attēla lauks (nevis jebkurš teksta lauks).
+const IMAGE_FIELD_RE = /(^|\.)(logo|logoInverse|image|heroImage)$/;
+const BLOB_URL_RE = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i;
 
 function handleImageUpload(req, res, next) {
   upload.single('image')(req, res, (err) => {
@@ -497,7 +637,7 @@ function handleImageUpload(req, res, next) {
       if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({ ok: false, error: 'Attēls ir par lielu. Maksimālais izmērs ir 4MB.' });
       }
-      return res.status(400).json({ ok: false, error: err.message || 'Neizdevās augšupielādēt attēlu.' });
+      return res.status(400).json({ ok: false, error: 'Neizdevās augšupielādēt attēlu.' });
     }
     next();
   });
@@ -509,19 +649,27 @@ app.post('/admin/api/image', requireAuthApi, handleImageUpload, asyncRoute(async
   if (!field || !file) {
     return res.status(400).json({ ok: false, error: 'Trūkst attēla vai lauka nosaukuma.' });
   }
-  const ext = path.extname(file.originalname).toLowerCase();
-  if (!IMAGE_EXTENSIONS.includes(ext) || !IMAGE_CONTENT_TYPES.includes(file.mimetype)) {
-    return res.status(400).json({ ok: false, error: 'Neatbalstīts attēla formāts.' });
+  if (!IMAGE_FIELD_RE.test(String(field))) {
+    return res.status(400).json({ ok: false, error: 'Šim laukam nevar piešķirt attēlu.' });
   }
-  const blob = await putBlob(`uploads/img-${Date.now()}${ext}`, file.buffer, {
-    access: 'public',
-    contentType: file.mimetype,
-    addRandomSuffix: true,
-  });
+  await security.ensureSchema(sql, deleteBlob);
+  if (await security.rateLimited(sql, 'upload', getClientIp(req) || 'unknown', 40, 10)) {
+    return res.status(429).json({ ok: false, error: 'Pārāk daudz augšupielāžu. Mēģini vēlreiz pēc dažām minūtēm.' });
+  }
+  const processed = await uploads.processAdminImage(file);
+  if (processed.error) {
+    return res.status(400).json({ ok: false, error: processed.error });
+  }
   const content = await readContent();
-  if (!setPath(content, field, blob.url)) {
+  if (!setPath(content, field, '')) {
     return res.status(400).json({ ok: false, error: 'Nezināms lauks: ' + field });
   }
+  const blob = await putBlob(processed.pathname, processed.buffer, {
+    access: 'public',
+    contentType: processed.contentType,
+    addRandomSuffix: true,
+  });
+  setPath(content, field, blob.url);
   await writeContent(content);
   res.json({ ok: true, url: blob.url });
 }));
@@ -530,6 +678,9 @@ app.post('/admin/api/video', requireAuthApi, asyncRoute(async (req, res) => {
   const { field, url } = req.body;
   if (!field || !url) {
     return res.status(400).json({ ok: false, error: 'Trūkst video vai lauka nosaukuma.' });
+  }
+  if (!/(^|\.)heroVideo$/.test(String(field)) || !BLOB_URL_RE.test(String(url))) {
+    return res.status(400).json({ ok: false, error: 'Nederīgs video lauks vai adrese.' });
   }
   const content = await readContent();
   if (!setPath(content, field, url)) {
@@ -541,8 +692,8 @@ app.post('/admin/api/video', requireAuthApi, asyncRoute(async (req, res) => {
 
 app.post('/admin/api/video/remove', requireAuthApi, asyncRoute(async (req, res) => {
   const { field } = req.body;
-  if (!field) {
-    return res.status(400).json({ ok: false, error: 'Trūkst lauka nosaukuma.' });
+  if (!field || !/(^|\.)heroVideo$/.test(String(field))) {
+    return res.status(400).json({ ok: false, error: 'Nederīgs video lauks.' });
   }
   const content = await readContent();
   const currentUrl = field.split('.').reduce((o, k) => (o == null ? o : o[/^\d+$/.test(k) ? Number(k) : k]), content);

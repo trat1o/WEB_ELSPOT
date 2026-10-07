@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<%- include('partials/head', { pageTitle: 'ELSPOT — Privātuma politika', editMode }) %>
+</head>
+<body>
+
+<%- include('partials/nav') %>
+
+<%
+  const req = (kontakti && kontakti.requisites) || {};
+  const company = req.companyName || 'SIA "ELSPOT"';
+%>
+
+<section class="legal">
+  <div class="legal-inner">
+    <div class="eyebrow">Juridiskā informācija</div>
+    <h1 class="legal-title">Privātuma politika</h1>
+    <p class="legal-updated">Pēdējoreiz atjaunota: 2026. gada 7. oktobrī</p>
+
+    <p>Šajā politikā skaidrojam, kā <%= company %> apstrādā personas datus, kad jūs apmeklējat mājaslapu elspot.lv un nosūtāt mums savu jautājumu vai cenu pieprasījumu. Apstrādi veicam saskaņā ar Eiropas Savienības Vispārīgo datu aizsardzības regulu (VDAR) un Latvijas tiesību aktiem.</p>
+
+    <h2>1. Pārzinis</h2>
+    <p>
+      <strong><%= company %></strong><br>
+      Reģistrācijas Nr.: <%= req.regNr || '—' %><br>
+      Juridiskā adrese: <%= req.legalAddress || '—' %><br>
+      E-pasts: <a href="mailto:<%= kontakti.email %>"><%= kontakti.email %></a><br>
+      Tālrunis: <%= kontakti.phone %>
+    </p>
+
+    <h2>2. Kādus datus apstrādājam un kāpēc</h2>
+    <table class="legal-table">
+      <thead>
+        <tr><th>Dati</th><th>Mērķis</th><th>Tiesiskais pamats</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Vārds/uzņēmuma nosaukums, e-pasts vai tālrunis, ziņas teksts, pievienotais fails (ja pievienojat)</td>
+          <td>Atbildēt uz jūsu jautājumu, sagatavot cenu piedāvājumu</td>
+          <td>VDAR 6. panta 1. punkta b) apakšpunkts (pasākumi pēc jūsu pieprasījuma pirms līguma noslēgšanas) un f) apakšpunkts (mūsu leģitīmās intereses sazināties ar klientiem)</td>
+        </tr>
+        <tr>
+          <td>IP adrese, pieprasījuma laiks un tehniskie dati veidlapu nosūtīšanas brīdī</td>
+          <td>Aizsardzība pret surogātpastu, robotiem un ļaunprātīgu izmantošanu; vietnes drošība</td>
+          <td>VDAR 6. panta 1. punkta f) apakšpunkts (leģitīmā interese nodrošināt vietnes drošību)</td>
+        </tr>
+        <tr>
+          <td>Servera žurnāli (IP adrese, pieprasītā lapa, laiks), ko veido hostinga pakalpojumu sniedzējs</td>
+          <td>Vietnes darbība un drošība</td>
+          <td>VDAR 6. panta 1. punkta f) apakšpunkts</td>
+        </tr>
+        <tr>
+          <td>Sīkdatņu izvēle (sīkdatne <em>elspot_consent</em>)</td>
+          <td>Atcerēties jūsu izvēli par ārējā satura ielādi</td>
+          <td>Tehniska nepieciešamība (Elektronisko sakaru likuma 100. pants)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Mēs neizmantojam analītikas, reklāmas vai sekošanas rīkus, un jūsu dati netiek izmantoti automatizētai lēmumu pieņemšanai vai profilēšanai.</p>
+    <p>Sniegt datus veidlapā nav obligāti, taču bez vārda un kontaktinformācijas mēs nevaram jums atbildēt.</p>
+
+    <h2>3. Cik ilgi glabājam datus</h2>
+    <ul>
+      <li>Jautājumus un cenu pieprasījumus (kopā ar pielikumiem un IP adresi) — ne ilgāk kā <strong>24 mēnešus</strong> no saņemšanas, pēc tam tie tiek dzēsti automātiski. Ja starp mums tiek noslēgts līgums, dokumentus glabājam tik ilgi, cik prasa grāmatvedības un nodokļu normatīvie akti.</li>
+      <li>Drošības žurnālus (veidlapu un pieslēgšanās mēģinājumus) — no 2 līdz 7 dienām.</li>
+      <li>Sīkdatni <em>elspot_consent</em> — 180 dienas.</li>
+    </ul>
+
+    <h2>4. Kam nododam datus</h2>
+    <p>Datus apstrādā tikai mūsu uzticami pakalpojumu sniedzēji (apstrādātāji), un tikai tik, cik nepieciešams pakalpojuma sniegšanai:</p>
+    <ul>
+      <li><strong>Vercel Inc.</strong> — mājaslapas hostings un failu (pielikumu, attēlu) glabāšana;</li>
+      <li><strong>Neon, Inc.</strong> — datubāze, kurā glabājam pieprasījumus (serveri atrodas Eiropas Savienībā, Frankfurtē);</li>
+      <li><strong>e-pasta pakalpojumu sniedzējs</strong> (Sertex) — jūsu pieprasījuma piegāde mūsu e-pastam;</li>
+      <li><strong>OpenStreetMap Foundation</strong> — tikai tad, ja jūs piekrītat kartes ielādei kontaktu lapā.</li>
+    </ul>
+    <p>Daži pakalpojumu sniedzēji (piem., Vercel) var apstrādāt datus ārpus Eiropas Ekonomikas zonas. Šādos gadījumos nodrošināta atbilstoša aizsardzība — ES–ASV datu privātuma regulējums vai Eiropas Komisijas apstiprinātās standarta līguma klauzulas. Mēs jūsu datus nepārdodam un neizmantojam mārketinga nolūkiem.</p>
+
+    <h2>5. Jūsu tiesības</h2>
+    <p>Jums ir tiesības:</p>
+    <ul>
+      <li>saņemt apstiprinājumu, vai mēs apstrādājam jūsu datus, un piekļūt tiem;</li>
+      <li>labot neprecīzus datus;</li>
+      <li>pieprasīt datu dzēšanu („tiesības tikt aizmirstam”);</li>
+      <li>ierobežot apstrādi vai iebilst pret apstrādi, kas balstīta uz leģitīmajām interesēm;</li>
+      <li>saņemt savus datus pārnesamā formātā;</li>
+      <li>jebkurā brīdī atsaukt doto piekrišanu (piem., kartes ielādei), izmantojot kājenē pieejamo saiti „Sīkdatņu iestatījumi”.</li>
+    </ul>
+    <p>Lai izmantotu savas tiesības, rakstiet uz <a href="mailto:<%= kontakti.email %>"><%= kontakti.email %></a>. Atbildēsim ne vēlāk kā 30 dienu laikā. Ja uzskatāt, ka jūsu dati tiek apstrādāti nepareizi, jums ir tiesības iesniegt sūdzību Datu valsts inspekcijā (<a href="https://www.dvi.gov.lv" target="_blank" rel="noopener">www.dvi.gov.lv</a>).</p>
+
+    <h2>6. Kā aizsargājam datus</h2>
+    <p>Vietne darbojas ar šifrētu savienojumu (HTTPS). Veidlapas ir aizsargātas pret robotiem un ļaunprātīgu izmantošanu, augšupielādētie faili tiek pārbaudīti, bet piekļuve datiem ir ierobežota — to var skatīt tikai pilnvaroti ELSPOT darbinieki.</p>
+
+    <h2>7. Izmaiņas politikā</h2>
+    <p>Šo politiku varam atjaunināt. Aktuālā versija vienmēr pieejama šajā lapā, un tās beigās norādīts atjaunināšanas datums.</p>
+
+    <p class="legal-links"><a href="/sikdatnu-politika">Sīkdatņu politika →</a></p>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<%- include('partials/quote-modal') %>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

@@ -9,6 +9,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Robotu pārbaude: serveris izsniedz parakstītu talonu, pārlūks fonā atrod SHA-256 atrisinājumu (~1 s).
+  let challengePromise = null;
+  async function solveChallenge() {
+    const res = await fetch('/api/challenge', { cache: 'no-store' });
+    const c = await res.json();
+    if (!c.ok) throw new Error('challenge');
+    const enc = new TextEncoder();
+    for (let n = 0; ; n++) {
+      const solution = n.toString(36);
+      const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', enc.encode(c.token + ':' + solution)));
+      let bits = 0;
+      for (const b of digest) {
+        if (b === 0) { bits += 8; continue; }
+        bits += Math.clz32(b) - 24;
+        break;
+      }
+      if (bits >= c.bits) return { token: c.token, solution, at: Date.now() };
+    }
+  }
+  function getChallenge() {
+    if (!challengePromise) challengePromise = solveChallenge();
+    return challengePromise.then((ch) => {
+      if (Date.now() - ch.at > 90 * 60 * 1000) { challengePromise = solveChallenge(); return challengePromise; }
+      return ch;
+    });
+  }
+  function warmChallenge() { getChallenge().catch(() => { challengePromise = null; }); }
+  document.querySelectorAll('form').forEach((f) => f.addEventListener('focusin', warmChallenge, { once: true }));
+
   // Cenas pieprasījuma logs
   const overlay = document.getElementById('quoteModal');
   const openTriggers = document.querySelectorAll('[data-open-quote]');
@@ -20,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e) e.preventDefault();
     if (overlay) overlay.classList.add('open');
     if (menu) menu.classList.remove('open');
+    warmChallenge();
   }
   function closeModal() {
     if (overlay) overlay.classList.remove('open');
@@ -45,7 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (submitBtn) submitBtn.disabled = true;
 
       try {
+        statusEl.textContent = 'Notiek drošības pārbaude…';
+        const ch = await getChallenge();
+        challengePromise = null;   // talons ir vienreizlietojams
         const formData = new FormData(form);
+        formData.set('ch_token', ch.token);
+        formData.set('ch_solution', ch.solution);
+        statusEl.textContent = '';
         const res = await fetch('/quote', { method: 'POST', body: formData });
         const data = await res.json();
         if (res.ok && data.ok) {
@@ -95,12 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const message = contactForm.contactMessage.value;
       const contact = phone ? `${email} / ${phone}` : email;
       const website = document.getElementById('contactWebsite').value;
+      const consent = document.getElementById('contactConsent').checked;
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
 
       try {
+        contactStatusEl.textContent = 'Notiek drošības pārbaude…';
+        const ch = await getChallenge();
+        challengePromise = null;   // talons ir vienreizlietojams
+        contactStatusEl.textContent = '';
         const res = await fetch('/quote', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, contact, message, website }),
+          body: JSON.stringify({ name, contact, message, website, consent, ch_token: ch.token, ch_solution: ch.solution }),
         });
         const data = await res.json();
         if (res.ok && data.ok) {
@@ -115,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contactStatusEl.textContent = 'Kļūda nosūtot pieprasījumu. Mēģini vēlreiz.';
         contactStatusEl.classList.add('error');
       }
+      if (submitBtn) submitBtn.disabled = false;
     });
   }
 });

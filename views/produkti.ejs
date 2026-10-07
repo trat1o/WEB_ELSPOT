@@ -30,7 +30,7 @@
             <button type="button" class="adm-image-btn product-card-image-btn" data-image-field="produkti.sections.<%= i %>.image">🖼 Mainīt attēlu</button>
           <% } %>
         </div>
-        <div class="product-card-title"<%- editAttrs(editMode, 'sections.' + i + '.title') %><% if (editMode) { %> onclick="event.preventDefault()"<% } %>><%= sec.title %></div>
+        <div class="product-card-title"<%- editAttrs(editMode, 'sections.' + i + '.title') %><% if (editMode) { %> data-no-nav<% } %>><%= sec.title %></div>
       </a>
     <% }) %>
   </div>

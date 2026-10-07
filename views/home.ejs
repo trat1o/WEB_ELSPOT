@@ -39,7 +39,6 @@
     <div class="why-grid">
       <% home.whyItems.forEach(function(item, i) { %>
         <div class="why-item">
-          <span class="why-num" aria-hidden="true">0<%= i + 1 %></span>
           <h3<%- editAttrs(editMode, 'whyItems.' + i + '.title') %>><%= item.title %></h3>
           <p<%- editAttrs(editMode, 'whyItems.' + i + '.text') %>><%= item.text %></p>
         </div>
@@ -51,7 +50,6 @@
 <section class="cta-strip">
   <div class="cta-strip-inner">
     <h2<%- editAttrs(editMode, 'ctaHeading') %>><%= home.ctaHeading %></h2>
-    <p<%- editAttrs(editMode, 'ctaText') %>><%= home.ctaText %></p>
     <a href="<%= editMode ? 'javascript:void(0)' : '#' %>" class="btn btn-primary" <%= editMode ? '' : 'data-open-quote' %><%- editAttrs(editMode, 'ctaButtonText') %>><%= home.ctaButtonText %></a>
   </div>
 </section>

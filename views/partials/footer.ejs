@@ -1,6 +1,14 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <a href="<%= editMode ? 'javascript:void(0)' : '/' %>" class="logo"<% if (editMode) { %> data-image-field="site.logo"<% } %>><img src="<%= site.logo %>" alt="ELSPOT" class="logo-img footer-logo-img"></a>
+    <% if (!editMode) { %>
+    <nav class="footer-links" aria-label="Juridiskā informācija">
+      <a href="/privatuma-politika">Privātuma politika</a>
+      <a href="/sikdatnu-politika">Sīkdatņu politika</a>
+      <button type="button" class="footer-link-btn" data-open-cookie-settings>Sīkdatņu iestatījumi</button>
+    </nav>
+    <% } %>
     <div class="footer-copy">Copyright <%= new Date().getFullYear() %> ELSPOT SIA. ©</div>
   </div>
 </footer>
+<% if (!editMode) { %><%- include('cookie-banner') %><% } %>

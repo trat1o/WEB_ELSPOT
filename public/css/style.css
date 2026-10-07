@@ -272,21 +272,13 @@ video.hero-media{
   background:var(--paper);
   border:1px solid rgba(22,29,66,0.08);
   border-top:3px solid var(--amber);
-  padding:32px 28px 36px;
-  min-height:240px;
+  padding:36px 28px 40px;
+  min-height:200px;
   transition:transform .18s ease, box-shadow .18s ease;
 }
 .why-item:hover{
   transform:translateY(-3px);
   box-shadow:0 10px 24px rgba(22,29,66,0.10);
-}
-.why-num{
-  font-family:'Playfair Display', serif;
-  font-size:40px;
-  line-height:1;
-  font-variant-numeric:lining-nums;
-  color:var(--amber);
-  margin-bottom:22px;
 }
 .why-item h3{
   color:var(--espresso);
@@ -883,3 +875,107 @@ div.manufacturer-logo[data-image-field]{ cursor:pointer; }
   .why-grid{ grid-template-columns:1fr; }
 }
 @media (max-width:420px){ .nav-link-tile{ font-size:11px; } .nav-link-tile img{ width:34px; height:34px; } }
+
+/* ---- SĪKDATŅU PAZIŅOJUMS, PIEKRIŠANA, JURIDISKĀS LAPAS ---- */
+[hidden]{ display:none !important; }
+.visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+.footer-links{ display:flex; flex-wrap:wrap; gap:6px 20px; align-items:center; }
+.footer-links a, .footer-link-btn{
+  color:var(--espresso-soft); font-size:13px; text-decoration:none;
+  background:none; border:0; padding:0; font-family:inherit; cursor:pointer;
+}
+.footer-links a:hover, .footer-link-btn:hover{ color:var(--red); text-decoration:underline; }
+
+.cookie-banner{
+  position:fixed; left:16px; right:16px; bottom:16px; z-index:1500;
+  max-width:980px; margin:0 auto;
+  background:var(--espresso); color:var(--paper);
+  border-radius:14px; box-shadow:0 14px 40px rgba(10,14,36,0.35);
+  padding:20px 24px;
+}
+.cookie-banner-inner{ display:flex; gap:24px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+.cookie-text{ flex:1 1 380px; font-size:14px; line-height:1.55; }
+.cookie-text strong{ display:block; font-size:16px; margin-bottom:6px; font-family:'Playfair Display', serif; }
+.cookie-text p{ color:rgba(244,246,250,0.85); }
+.cookie-text a{ color:var(--paper); text-decoration:underline; }
+.cookie-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+.cookie-btn{
+  font-family:inherit; font-size:14px; font-weight:600; cursor:pointer;
+  padding:11px 18px; border-radius:8px; border:1px solid transparent; min-height:44px;
+  transition:transform .15s ease, background .15s ease;
+}
+.cookie-btn:hover{ transform:translateY(-1px); }
+/* "Pieņemt" un "Noraidīt" ir vienāda izmēra un svara (ES vadlīnijas) */
+.cookie-btn-accept{ background:var(--red); color:#fff; }
+.cookie-btn-reject{ background:var(--paper); color:var(--espresso); }
+.cookie-btn-settings{ background:transparent; color:var(--paper); border-color:rgba(244,246,250,0.45); }
+.cookie-btn:focus-visible, .footer-link-btn:focus-visible{ outline:3px solid var(--amber); outline-offset:2px; }
+
+.cookie-modal{
+  position:fixed; inset:0; z-index:1600; display:flex; align-items:center; justify-content:center;
+  background:rgba(10,14,36,0.65); padding:16px;
+}
+.cookie-modal-box{
+  position:relative; background:var(--paper); color:var(--espresso);
+  width:100%; max-width:520px; border-radius:14px; padding:28px; max-height:90vh; overflow:auto;
+}
+.cookie-modal-box h3{ font-size:22px; margin-bottom:16px; }
+.cookie-modal-close{
+  position:absolute; top:12px; right:14px; background:none; border:0; font-size:28px; line-height:1;
+  color:var(--espresso-soft); cursor:pointer;
+}
+.cookie-option{ padding:14px 0; border-top:1px solid rgba(22,29,66,0.1); }
+.cookie-option-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:6px; }
+.cookie-option p{ font-size:13px; color:var(--espresso-soft); line-height:1.55; }
+.cookie-always{ font-size:12px; font-weight:600; color:var(--espresso-soft); }
+.cookie-switch{ position:relative; display:inline-block; width:46px; height:26px; flex:none; }
+.cookie-switch input{ position:absolute; opacity:0; inset:0; width:100%; height:100%; cursor:pointer; margin:0; }
+.cookie-switch-track{ position:absolute; inset:0; background:#aab1c5; border-radius:26px; transition:background .15s; pointer-events:none; }
+.cookie-switch-track::after{
+  content:''; position:absolute; top:3px; left:3px; width:20px; height:20px; border-radius:50%;
+  background:#fff; transition:transform .15s;
+}
+.cookie-switch input:checked + .cookie-switch-track{ background:var(--red); }
+.cookie-switch input:checked + .cookie-switch-track::after{ transform:translateX(20px); }
+.cookie-switch input:focus-visible + .cookie-switch-track{ outline:3px solid var(--amber); outline-offset:2px; }
+.cookie-modal-actions{ display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; margin-top:12px; }
+.cookie-modal-actions .cookie-btn-reject{ border-color:rgba(22,29,66,0.25); }
+
+.map-consent{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:24px;
+  background:linear-gradient(160deg, var(--paper-deep), var(--paper));
+  text-align:center;
+}
+.map-consent-box{ max-width:280px; }
+.map-consent-box strong{ display:block; font-size:16px; margin-bottom:8px; font-family:'Playfair Display', serif; }
+.map-consent-box p{ font-size:13px; color:var(--espresso-soft); line-height:1.55; margin-bottom:16px; }
+.map-consent-box a{ color:var(--red); }
+
+.consent-check{ display:flex; gap:10px; align-items:flex-start; font-size:12.5px; line-height:1.5; color:var(--espresso-soft); margin:4px 0 16px; cursor:pointer; }
+.consent-check input{ width:18px; height:18px; margin-top:2px; flex:none; accent-color:var(--red); }
+.consent-check a{ color:var(--red); }
+
+.legal{ padding:215px 32px 90px; }
+.legal-inner{ max-width:860px; margin:0 auto; font-size:15px; line-height:1.7; color:var(--espresso); }
+.legal-title{ font-size:clamp(30px, 4vw, 44px); margin:6px 0 8px; }
+.legal-updated{ color:var(--espresso-soft); font-size:13px; margin-bottom:28px; }
+.legal h2{ font-size:22px; margin:36px 0 10px; }
+.legal p{ margin-bottom:14px; }
+.legal ul{ margin:0 0 14px 22px; }
+.legal li{ margin-bottom:6px; }
+.legal a{ color:var(--red); }
+.legal code{ background:var(--paper-deep); padding:1px 6px; border-radius:4px; font-size:13px; }
+.legal-table{ width:100%; border-collapse:collapse; margin:10px 0 18px; font-size:13.5px; line-height:1.5; }
+.legal-table th, .legal-table td{ border:1px solid rgba(22,29,66,0.14); padding:10px 12px; text-align:left; vertical-align:top; }
+.legal-table th{ background:var(--paper-deep); font-weight:600; }
+.legal-links{ margin-top:30px; }
+@media (max-width:640px){
+  .legal{ padding-top:170px; }
+  .legal-table{ display:block; overflow-x:auto; }
+  .cookie-banner{ left:8px; right:8px; bottom:8px; padding:16px; }
+  .cookie-actions .cookie-btn{ flex:1 1 100%; }
+}
+
+.admin-hint{ font-size:13px; color:var(--espresso-soft); margin:0 0 16px; line-height:1.5; }
+.admin-hint a{ color:var(--red); }
