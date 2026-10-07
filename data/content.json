@@ -1352,7 +1352,10 @@
       {
         "icon": "bulb",
         "image": null,
-        "title": "Apgaismojuma aprēķins"
+        "title": "Apgaismojuma aprēķins",
+        "video": "/video/apgaismojums.mp4",
+        "poster": "/video/apgaismojums-poster.jpg",
+        "videoFit": "contain"
       },
       {
         "icon": "estimate",

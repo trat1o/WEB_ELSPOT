@@ -391,6 +391,8 @@ video.hero-media{
   object-fit:cover; object-position:center 54%;   /* vertikālais video — rāda piekabes zonu */
   background:var(--espresso);
 }
+/* Horizontāls video ar iebūvētiem uzrakstiem — nerēķināt malas, rāda pilnu kadru uz melna fona */
+.service-video.is-contain{ object-fit:contain; object-position:center; background:#000; }
 .service-video-badge{
   position:absolute; right:14px; bottom:14px; width:42px; height:42px; border-radius:50%;
   background:rgba(22,29,66,0.72); color:#fff; display:flex; align-items:center; justify-content:center;
