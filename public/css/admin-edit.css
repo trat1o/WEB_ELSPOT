@@ -43,8 +43,8 @@ body.admin-mode .nav{ top:40px; }
 .adm-maint-toggle:hover{ background:rgba(255,255,255,0.1); }
 .adm-maint-toggle:disabled{ opacity:.6; cursor:default; }
 .adm-maint-dot{ width:8px; height:8px; border-radius:50%; background:#7a8190; }
-.adm-maint-toggle.is-on{ border-color:#D98E3C; }
-.adm-maint-toggle.is-on .adm-maint-dot{ background:#D98E3C; box-shadow:0 0 8px #D98E3C; }
+.adm-maint-toggle.is-on{ border-color:#FF5A5A; }
+.adm-maint-toggle.is-on .adm-maint-dot{ background:#FF5A5A; box-shadow:0 0 8px #FF5A5A; }
 .adm-topbar-logout{
   background:transparent;
   border:1px solid rgba(255,255,255,0.35);
@@ -67,17 +67,17 @@ body.admin-mode .nav{ top:40px; }
   transition:outline-color .15s ease, background-color .15s ease;
 }
 [data-field]:hover{
-  outline-color:rgba(217,142,60,0.55);
+  outline-color:rgba(255,90,90,0.55);
 }
 [data-field]:focus{
   outline-width:2px;
   outline-style:solid;
-  outline-color:#D98E3C;
-  background-color:rgba(217,142,60,0.08);
+  outline-color:#FF5A5A;
+  background-color:rgba(255,90,90,0.08);
 }
 [data-field].adm-dirty{
-  outline-color:#D98E3C;
-  background-color:rgba(217,142,60,0.1);
+  outline-color:#FF5A5A;
+  background-color:rgba(255,90,90,0.1);
 }
 
 /* ---- EDITABLE IMAGES ---- */
@@ -88,7 +88,7 @@ body.admin-mode .nav{ top:40px; }
   transition:outline-color .15s ease;
   border-radius:4px;
 }
-.logo[data-image-field]:hover{ outline-color:rgba(217,142,60,0.7); }
+.logo[data-image-field]:hover{ outline-color:rgba(255,90,90,0.7); }
 
 .adm-hero-media-controls{
   position:absolute;
@@ -101,7 +101,7 @@ body.admin-mode .nav{ top:40px; }
   gap:8px;
 }
 .adm-image-btn{
-  background:rgba(20,14,8,0.75);
+  background:rgba(10,14,36,0.75);
   color:#fff;
   border:1px solid rgba(255,255,255,0.4);
   padding:9px 16px;
@@ -113,14 +113,14 @@ body.admin-mode .nav{ top:40px; }
   transition:background .15s ease;
   white-space:nowrap;
 }
-.adm-image-btn:hover{ background:rgba(20,14,8,0.92); }
+.adm-image-btn:hover{ background:rgba(10,14,36,0.92); }
 .adm-video-remove-btn{
-  background:rgba(156,44,31,0.85);
+  background:rgba(178,47,47,0.85);
   border-color:rgba(255,255,255,0.3);
   font-size:12px;
   padding:7px 14px;
 }
-.adm-video-remove-btn:hover{ background:rgba(156,44,31,1); }
+.adm-video-remove-btn:hover{ background:rgba(178,47,47,1); }
 
 /* ---- SAVE BAR ---- */
 .adm-savebar{
@@ -143,7 +143,7 @@ body.admin-mode .nav{ top:40px; }
 .adm-savebar-actions{ display:flex; gap:10px; }
 .adm-savebar-discard{
   background:transparent;
-  border:1px solid rgba(247,238,218,0.4);
+  border:1px solid rgba(244,246,250,0.4);
   color:var(--paper);
   padding:8px 14px;
   border-radius:4px;
