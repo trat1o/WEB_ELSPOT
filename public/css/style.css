@@ -442,6 +442,40 @@ video.hero-media{
   right:12px;
   z-index:10;
 }
+/* ---- PAKALPOJUMI ---- */
+.service-card{ cursor:default; }
+.service-card:hover{ transform:none; box-shadow:none; }
+.service-card-icon{ flex-direction:column; }
+.service-card-icon svg{ width:88px; height:88px; color:var(--paper); opacity:.95; }
+.service-note{
+  margin-top:64px;
+  display:grid;
+  grid-template-columns:1.7fr 1fr;
+  gap:40px;
+  align-items:center;
+  padding:48px 52px;
+  background:var(--espresso);
+  color:var(--paper);
+  border-left:4px solid var(--amber);
+}
+.service-note .eyebrow{ margin-bottom:12px; }
+.service-note h3{ font-size:clamp(24px,2.6vw,32px); color:var(--paper); margin-bottom:14px; }
+.service-note p{ color:color-mix(in srgb, var(--paper) 78%, transparent); font-size:16px; max-width:56ch; }
+.service-chips{ list-style:none; display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+.service-chips li{
+  padding:8px 16px;
+  border:1px solid color-mix(in srgb, var(--paper) 38%, transparent);
+  border-radius:999px;
+  font-size:14px;
+  font-weight:500;
+  color:var(--paper);
+}
+.service-note-cta{ text-align:right; }
+@media (max-width:820px){
+  .service-note{ grid-template-columns:1fr; padding:36px 28px; }
+  .service-note-cta{ text-align:left; }
+}
+
 .back-link{
   display:inline-block;
   margin-bottom:18px;
@@ -664,7 +698,8 @@ div.manufacturer-logo[data-image-field]{ cursor:pointer; }
 }
 .map-cta-wrap{
   position:absolute;
-  bottom:20px; left:50%;
+  /* virs OpenStreetMap autoru norādes (licence prasa to atstāt redzamu) */
+  bottom:64px; left:50%;
   transform:translateX(-50%);
   z-index:10;
 }

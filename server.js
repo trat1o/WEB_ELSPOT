@@ -61,7 +61,7 @@ async function sendQuoteEmail(quote) {
 const PAGES = {
   home: { template: 'home', label: 'Galvenā' },
   produkti: { template: 'produkti', label: 'Produkti' },
-  pakalpojumi: { template: 'coming-soon', label: 'Pakalpojumi' },
+  pakalpojumi: { template: 'pakalpojumi', label: 'Pakalpojumi' },
   'par-mums': { template: 'par-mums', label: 'Par mums' },
   kontakti: { template: 'kontakti', label: 'Kontakti' },
 };
@@ -444,6 +444,17 @@ app.post('/admin/api/content', requireAuthApi, asyncRoute(async (req, res) => {
   const basePage = typeof page === 'string' ? page.split('/')[0] : page;
   if (!basePage || !PAGES[basePage] || typeof fields !== 'object' || fields === null) {
     return res.status(400).json({ ok: false, error: 'Nepareizi dati.' });
+  }
+  // Kartes koordinātām jābūt skaitļiem, citādi karte nezina, kur likt pinu.
+  for (const [fieldPath, rawValue] of Object.entries(fields)) {
+    if (/(^|\.)map(Lat|Lng)$/.test(fieldPath)) {
+      const n = Number(String(rawValue).trim().replace(',', '.'));
+      const limit = /Lat$/.test(fieldPath) ? 90 : 180;
+      if (!Number.isFinite(n) || Math.abs(n) > limit) {
+        return res.status(400).json({ ok: false, error: 'Kartes koordinātām jābūt skaitļiem (piem., platums 56.9296, garums 24.2071). Waze/Google saites tiek veidotas automātiski.' });
+      }
+      fields[fieldPath] = String(n);
+    }
   }
   const content = await readContent();
   const target = basePage === 'home' ? content.home : content[basePage];

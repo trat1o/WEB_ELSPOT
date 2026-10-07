@@ -43,11 +43,15 @@ async function main() {
   const contentPath = path.join(__dirname, '..', 'data', 'content.json');
   if (fs.existsSync(contentPath)) {
     const content = JSON.parse(fs.readFileSync(contentPath, 'utf-8'));
-    await sql`
+    // DROŠĪBA: esošo saturu NEPĀRRAKSTA (admin panelī veiktās izmaiņas pretējā gadījumā pazustu).
+    const inserted = await sql`
       INSERT INTO site_content (id, content) VALUES (1, ${JSON.stringify(content)}::jsonb)
-      ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content
+      ON CONFLICT (id) DO NOTHING
+      RETURNING id
     `;
-    console.log('Saturs (data/content.json) pārcelts uz site_content tabulu.');
+    console.log(inserted.length
+      ? 'Saturs (data/content.json) pārcelts uz site_content tabulu.'
+      : 'site_content jau satur datus — saturs netika pārrakstīts.');
   } else {
     console.log('Nav atrasts data/content.json — izlaižam satura pārcelšanu.');
   }

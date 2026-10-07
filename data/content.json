@@ -1349,8 +1349,48 @@
     ]
   },
   "pakalpojumi": {
+    "body": "Šī sadaļa vēl top. Sazinies ar mums, un ar prieku palīdzēsim jau tagad.",
+    "intro": "Papildus elektromateriālu pārdošanai piedāvājam pakalpojumus, kas atvieglo projekta plānošanu un īstenošanu.",
+    "items": [
+      {
+        "icon": "bulb",
+        "image": null,
+        "title": "Apgaismojuma aprēķins"
+      },
+      {
+        "icon": "estimate",
+        "image": null,
+        "title": "Tāmēšana"
+      },
+      {
+        "icon": "truck",
+        "image": null,
+        "title": "Preču piegāde uz objektu"
+      },
+      {
+        "icon": "trailer",
+        "image": null,
+        "title": "Kabeļu transportēšanas piekabes noma"
+      }
+    ],
     "title": "Pakalpojumi",
-    "body": "Šī sadaļa vēl top. Sazinies ar mums, un ar prieku palīdzēsim jau tagad."
+    "extras": [
+      {
+        "title": "Elektroinstalācijas darbi"
+      },
+      {
+        "title": "Projektēšana"
+      },
+      {
+        "title": "Elektriskie mērījumi"
+      },
+      {
+        "title": "Sadalņu komplektēšana"
+      }
+    ],
+    "heading": "Palīdzam no aprēķina līdz piegādei objektā",
+    "noteText": "Ja jums nepieciešams viens no tālāk minētajiem pakalpojumiem, griezieties pie mūsu speciālistiem — viņi sniegs padomu un ieteiks piemērotāko risinājumu jūsu objektam.",
+    "noteHeading": "Nepieciešams speciālista ieteikums?"
   },
   "par-mums": {
     "eyebrow": "Par ELSPOT",
