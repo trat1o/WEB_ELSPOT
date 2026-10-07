@@ -36,13 +36,10 @@
 
 <section class="why">
   <div class="why-inner">
-    <div class="section-head">
-      <div class="eyebrow"<%- editAttrs(editMode, 'whyEyebrow') %>><%= home.whyEyebrow %></div>
-      <h2<%- editAttrs(editMode, 'whyHeading') %>><%= home.whyHeading %></h2>
-    </div>
     <div class="why-grid">
       <% home.whyItems.forEach(function(item, i) { %>
         <div class="why-item">
+          <span class="why-num" aria-hidden="true">0<%= i + 1 %></span>
           <h3<%- editAttrs(editMode, 'whyItems.' + i + '.title') %>><%= item.title %></h3>
           <p<%- editAttrs(editMode, 'whyItems.' + i + '.text') %>><%= item.text %></p>
         </div>

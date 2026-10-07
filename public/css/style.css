@@ -255,27 +255,48 @@ video.hero-media{
 /* ---- WHY ELSPOT (gaišs fons) ---- */
 .why{
   background:var(--paper-deep);
-  padding:140px 32px;
+  padding:96px 32px;
 }
 .why-inner{
   max-width:1180px;
   margin:0 auto;
 }
-.why .section-head .eyebrow{ color:var(--amber-deep); font-size:26px; }
-.why .section-head h2{ color:var(--espresso); }
 .why-grid{
   display:grid;
   grid-template-columns:repeat(4, 1fr);
   gap:24px;
 }
+.why-item{
+  display:flex;
+  flex-direction:column;
+  background:var(--paper);
+  border:1px solid rgba(43,33,21,0.08);
+  border-top:3px solid var(--amber);
+  padding:32px 28px 36px;
+  min-height:240px;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.why-item:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 24px rgba(43,33,21,0.10);
+}
+.why-num{
+  font-family:'Playfair Display', serif;
+  font-size:40px;
+  line-height:1;
+  font-variant-numeric:lining-nums;
+  color:var(--amber);
+  margin-bottom:22px;
+}
 .why-item h3{
-  color:var(--amber-deep);
-  font-size:18px;
-  margin-bottom:10px;
+  color:var(--espresso);
+  font-size:20px;
+  margin-bottom:12px;
 }
 .why-item p{
   color:var(--espresso-soft);
-  font-size:14px;
+  font-size:15px;
+  line-height:1.6;
 }
 
 /* ---- CTA STRIP (tumšs fons) ---- */
