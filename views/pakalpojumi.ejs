@@ -31,7 +31,7 @@
       <div class="product-card service-card">
         <div class="product-card-media">
           <% if (item.video) { %>
-            <video class="service-video<%= item.videoFit === 'contain' ? ' is-contain' : '' %>" muted loop playsinline preload="auto" poster="<%= item.poster || item.image || '' %>" aria-label="<%= item.title %> — animācija">
+            <video class="service-video<%= item.videoFit === 'contain' ? ' is-contain' : '' %>"<% if (/^#[0-9a-fA-F]{6}$/.test(item.videoBg || '')) { %> style="background:<%= item.videoBg %>"<% } %> muted loop playsinline preload="auto" poster="<%= item.poster || item.image || '' %>" aria-label="<%= item.title %> — animācija">
               <source src="<%= item.video %>" type="video/mp4">
             </video>
             <span class="service-video-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>

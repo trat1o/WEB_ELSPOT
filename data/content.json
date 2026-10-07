@@ -1360,7 +1360,11 @@
       {
         "icon": "estimate",
         "image": null,
-        "title": "Tāmēšana"
+        "title": "Tāmēšana",
+        "video": "/video/tamesana.mp4",
+        "poster": "/video/tamesana-kadrs.jpg",
+        "videoFit": "contain",
+        "videoBg": "#050608"
       },
       {
         "icon": "truck",

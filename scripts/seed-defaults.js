@@ -12,7 +12,7 @@ const PAKALPOJUMI_DEFAULTS = {
   intro: 'Papildus elektromateriālu pārdošanai piedāvājam pakalpojumus, kas atvieglo projekta plānošanu un īstenošanu.',
   items: [
     { title: 'Apgaismojuma aprēķins', image: null, icon: 'bulb', video: '/video/apgaismojums.mp4', poster: '/video/apgaismojums-ekas-kadrs.jpg', videoFit: 'contain' },
-    { title: 'Tāmēšana', image: null, icon: 'estimate' },
+    { title: 'Tāmēšana', image: null, icon: 'estimate', video: '/video/tamesana.mp4', poster: '/video/tamesana-kadrs.jpg', videoFit: 'contain', videoBg: '#050608' },
     { title: 'Preču piegāde uz objektu', image: null, icon: 'truck' },
     { title: 'Kabeļu transportēšanas piekabes noma', image: null, icon: 'trailer', video: '/video/piekabe.mp4', poster: '/video/piekabe-poster.jpg' },
   ],
