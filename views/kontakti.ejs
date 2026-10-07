@@ -49,6 +49,24 @@
         <span class="contact-field-value"<%- editAttrs(editMode, 'hours') %>><%= page.hours %></span>
       </div>
 
+      <div class="contact-field-row contact-nav-row">
+        <span class="contact-field-label">Atrodi mūs navigācijā</span>
+        <div class="nav-links">
+          <a class="nav-link-tile" href="<%= wazeUrl %>" target="_blank" rel="noopener" aria-label="Atvērt adresi lietotnē Waze">
+            <img src="/img/apps/waze.svg" alt="" width="40" height="40" loading="lazy">
+            <span>Waze</span>
+          </a>
+          <a class="nav-link-tile" href="<%= googleUrl %>" target="_blank" rel="noopener" aria-label="Atvērt adresi lietotnē Google Maps">
+            <img src="/img/apps/googlemaps.svg" alt="" width="40" height="40" loading="lazy">
+            <span>Google Maps</span>
+          </a>
+          <a class="nav-link-tile" href="<%= appleUrl %>" target="_blank" rel="noopener" aria-label="Atvērt adresi lietotnē Apple Maps">
+            <img src="/img/apps/applemaps.svg" alt="" width="40" height="40" loading="lazy">
+            <span>Apple Maps</span>
+          </a>
+        </div>
+      </div>
+
       <% if (editMode) { %>
         <div class="contact-field-row contact-field-row-coords">
           <span class="contact-field-label">Karte — platums (tikai skaitlis, piem. 56.9296)</span>

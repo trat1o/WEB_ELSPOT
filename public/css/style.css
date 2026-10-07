@@ -599,6 +599,28 @@ div.manufacturer-logo[data-image-field]{ cursor:pointer; }
 }
 .contact-field-row-coords .contact-field-value{ font-weight:400; font-size:14px; }
 
+/* Navigācijas lietotņu saites (Waze, Google Maps, Apple Maps) kontaktu kartē */
+.nav-links{ display:flex; gap:8px; margin-top:6px; }
+.nav-link-tile{
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  flex:1 1 0; min-width:0;
+  padding:12px 4px;
+  border:1px solid color-mix(in srgb, var(--espresso) 14%, transparent);
+  border-radius:12px;
+  background:#fff;
+  color:var(--espresso);
+  font-size:12px; text-align:center; white-space:nowrap; font-weight:600;
+  text-decoration:none;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.nav-link-tile img{ width:40px; height:40px; display:block; }
+.nav-link-tile:hover,
+.nav-link-tile:focus-visible{
+  transform:translateY(-2px);
+  border-color:var(--amber);
+  box-shadow:0 6px 16px color-mix(in srgb, var(--espresso) 14%, transparent);
+}
+
 .contact-requisites-title{ font-size:18px; color:var(--espresso); margin-bottom:8px; }
 .contact-requisites-grid{
   display:grid;
@@ -839,3 +861,4 @@ div.manufacturer-logo[data-image-field]{ cursor:pointer; }
 @media (max-width:560px){
   .why-grid{ grid-template-columns:1fr; }
 }
+@media (max-width:420px){ .nav-link-tile{ font-size:11px; } .nav-link-tile img{ width:34px; height:34px; } }
