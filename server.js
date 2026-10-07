@@ -619,27 +619,6 @@ app.post('/admin/api/produkti/category/remove', requireAuthApi, asyncRoute(async
   res.json({ ok: true });
 }));
 
-app.post('/admin/api/par-mums/team/add', requireAuthApi, asyncRoute(async (req, res) => {
-  const content = await readContent();
-  const page = content['par-mums'];
-  if (!Array.isArray(page.teamMembers)) page.teamMembers = [];
-  page.teamMembers.push({ name: 'Vārds Uzvārds', role: 'Amats', photo: null, phone: '', email: '' });
-  await writeContent(content);
-  res.json({ ok: true });
-}));
-
-app.post('/admin/api/par-mums/team/remove', requireAuthApi, asyncRoute(async (req, res) => {
-  const memberIndex = Number(req.body.memberIndex);
-  const content = await readContent();
-  const page = content['par-mums'];
-  if (!Array.isArray(page.teamMembers) || !page.teamMembers[memberIndex]) {
-    return res.status(400).json({ ok: false, error: 'Komandas biedrs nav atrasts.' });
-  }
-  page.teamMembers.splice(memberIndex, 1);
-  await writeContent(content);
-  res.json({ ok: true });
-}));
-
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(err);

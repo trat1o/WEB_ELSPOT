@@ -363,52 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // ---- Par mums komanda (pievienot/dzēst) ----
-  document.querySelectorAll('[data-team-add]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      btn.disabled = true;
-      try {
-        const res = await fetch('/admin/api/par-mums/team/add', { method: 'POST' });
-        const data = await res.json();
-        if (res.ok && data.ok) {
-          window.location.reload();
-        } else {
-          showToast(data.error || 'Neizdevās pievienot darbinieku.', true);
-          btn.disabled = false;
-        }
-      } catch (err) {
-        showToast('Neizdevās pievienot darbinieku.', true);
-        btn.disabled = false;
-      }
-    });
-  });
-
-  document.querySelectorAll('[data-team-remove]').forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!window.confirm('Dzēst šo darbinieku?')) return;
-      btn.disabled = true;
-      try {
-        const res = await fetch('/admin/api/par-mums/team/remove', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ memberIndex: btn.dataset.memberIndex }),
-        });
-        const data = await res.json();
-        if (res.ok && data.ok) {
-          window.location.reload();
-        } else {
-          showToast(data.error || 'Neizdevās dzēst darbinieku.', true);
-          btn.disabled = false;
-        }
-      } catch (err) {
-        showToast('Neizdevās dzēst darbinieku.', true);
-        btn.disabled = false;
-      }
-    });
-  });
-
   window.addEventListener('beforeunload', (e) => {
     if (dirtyFields.size > 0) {
       e.preventDefault();

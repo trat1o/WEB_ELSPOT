@@ -235,71 +235,6 @@ video.hero-media{
 .section-head .eyebrow{ color:var(--amber-deep); }
 .section-head h2{ font-size:clamp(24px,3vw,34px); color:var(--espresso); }
 
-/* ---- PAR MUMS — KOMANDA ---- */
-.team-section{
-  max-width:1180px;
-  margin:0 auto;
-  padding:0 32px 96px;
-}
-.team-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
-  gap:28px;
-}
-.team-card{ display:flex; flex-direction:column; }
-.team-photo-wrap{ position:relative; }
-.team-photo,
-.team-photo-placeholder{
-  display:block;
-  aspect-ratio:3/4;
-  border:1px solid rgba(43,33,21,0.15);
-  background-color:#fff;
-  background-size:cover;
-  background-position:center;
-  margin-bottom:14px;
-  transition:box-shadow .18s ease;
-}
-.team-photo-placeholder{ background-color:var(--paper-deep); }
-.team-photo[data-image-field],
-.team-photo-placeholder[data-image-field]{ cursor:pointer; }
-.team-photo[data-image-field]:hover,
-.team-photo-placeholder[data-image-field]:hover{ box-shadow:0 8px 20px rgba(43,33,21,0.18); }
-.team-remove-btn{
-  position:absolute;
-  top:-10px;
-  right:-10px;
-  z-index:10;
-  width:24px; height:24px;
-  background:var(--red);
-  color:#fff;
-  border:2px solid var(--paper);
-  font-size:13px;
-  line-height:1;
-  cursor:pointer;
-}
-.team-remove-btn:hover{ background:var(--red-deep); }
-.team-name{
-  font-family:'Playfair Display',serif;
-  font-size:18px;
-  font-weight:500;
-  color:var(--espresso);
-}
-.team-name:empty::before{ content:'Vārds Uzvārds'; opacity:.4; }
-.team-role{
-  font-size:13px;
-  color:var(--amber-deep);
-  font-weight:600;
-  margin-bottom:8px;
-}
-.team-role:empty::before{ content:'Amats'; opacity:.4; }
-.team-contact-row{ display:flex; flex-direction:column; gap:2px; }
-.team-phone, .team-email{
-  font-size:13px;
-  color:var(--espresso-soft);
-}
-.team-phone:empty::before{ content:'Tālrunis'; opacity:.4; }
-.team-email:empty::before{ content:'E-pasts'; opacity:.4; }
-
 /* ---- PAR MUMS — MOTO ---- */
 .motto-section{
   background:var(--espresso);
@@ -316,13 +251,6 @@ video.hero-media{
   color:var(--paper);
 }
 .motto-section .eyebrow{ color:var(--amber); margin-bottom:16px; }
-
-@media (max-width:820px){
-  .team-grid{ grid-template-columns:repeat(2, 1fr); }
-}
-@media (max-width:520px){
-  .team-grid{ grid-template-columns:1fr; }
-}
 
 /* ---- WHY ELSPOT (gaišs fons) ---- */
 .why{
