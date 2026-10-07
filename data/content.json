@@ -1367,7 +1367,9 @@
       {
         "icon": "trailer",
         "image": null,
-        "title": "Kabeļu transportēšanas piekabes noma"
+        "title": "Kabeļu transportēšanas piekabes noma",
+        "video": "/video/piekabe.mp4",
+        "poster": "/video/piekabe-poster.jpg"
       }
     ],
     "title": "Pakalpojumi",

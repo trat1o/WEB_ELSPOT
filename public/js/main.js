@@ -38,6 +38,30 @@ document.addEventListener('DOMContentLoaded', () => {
   function warmChallenge() { getChallenge().catch(() => { challengePromise = null; }); }
   document.querySelectorAll('form').forEach((f) => f.addEventListener('focusin', warmChallenge, { once: true }));
 
+  // Pakalpojumu kartiņas ar video: statisks attēls, animācija sākas, uzbraucot ar peli (skārienekrānā — pieskaroties)
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.service-card').forEach((card) => {
+    const video = card.querySelector('.service-video');
+    if (!video) return;
+    const start = () => {
+      card.classList.add('is-playing');
+      const p = video.play();
+      if (p && p.catch) p.catch(() => card.classList.remove('is-playing'));
+    };
+    const stop = () => {
+      video.pause();
+      video.load();   // atgriež statisko attēlu (poster)
+      card.classList.remove('is-playing');
+    };
+    card.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && !reducedMotion) start(); });
+    card.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') stop(); });
+    card.addEventListener('click', (e) => { if (e.target.closest('[contenteditable]')) return; if (card.classList.contains('is-playing')) stop(); else start(); });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (card.classList.contains('is-playing')) stop(); else start(); }
+    });
+    card.setAttribute('tabindex', '0');
+  });
+
   // Cenas pieprasījuma logs
   const overlay = document.getElementById('quoteModal');
   const openTriggers = document.querySelectorAll('[data-open-quote]');

@@ -14,7 +14,7 @@ const PAKALPOJUMI_DEFAULTS = {
     { title: 'Apgaismojuma aprēķins', image: null, icon: 'bulb' },
     { title: 'Tāmēšana', image: null, icon: 'estimate' },
     { title: 'Preču piegāde uz objektu', image: null, icon: 'truck' },
-    { title: 'Kabeļu transportēšanas piekabes noma', image: null, icon: 'trailer' },
+    { title: 'Kabeļu transportēšanas piekabes noma', image: null, icon: 'trailer', video: '/video/piekabe.mp4', poster: '/video/piekabe-poster.jpg' },
   ],
   noteHeading: 'Nepieciešams speciālista ieteikums?',
   noteText: 'Ja jums nepieciešams viens no tālāk minētajiem pakalpojumiem, griezieties pie mūsu speciālistiem — viņi sniegs padomu un ieteiks piemērotāko risinājumu jūsu objektam.',

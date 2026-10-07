@@ -30,12 +30,17 @@
     <% page.items.forEach(function(item, i) { %>
       <div class="product-card service-card">
         <div class="product-card-media">
-          <% if (item.image) { %>
+          <% if (item.video) { %>
+            <video class="service-video" muted loop playsinline preload="auto" poster="<%= item.poster || item.image || '' %>" aria-label="<%= item.title %> — animācija">
+              <source src="<%= item.video %>" type="video/mp4">
+            </video>
+            <span class="service-video-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
+          <% } else if (item.image) { %>
             <div class="product-card-image" style="background-image:url('<%= item.image %>')"></div>
           <% } else { %>
             <div class="product-card-placeholder service-card-icon"><%- icons[item.icon] || icons.bulb %></div>
           <% } %>
-          <% if (editMode) { %>
+          <% if (editMode && !item.video) { %>
             <button type="button" class="adm-image-btn product-card-image-btn" data-image-field="pakalpojumi.items.<%= i %>.image">🖼 Mainīt attēlu</button>
           <% } %>
         </div>
